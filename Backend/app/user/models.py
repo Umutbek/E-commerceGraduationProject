@@ -59,8 +59,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Store(User):
     """Model for Store"""
-    slogan = models.CharField(max_length=200, null=True, blank=True, verbose_name="Слоган")
-    description = models.TextField(null=True, blank=True, verbose_name="Описание")
+    slogan = models.CharField(max_length=200, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("Store")
