@@ -7,6 +7,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext as _
 
 from user import models
+from item import models as model
 
 
 class UserAdmin(BaseUserAdmin):
@@ -32,6 +33,11 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.RegularAccount)
 admin.site.register(models.Store)
+admin.site.register(model.Category)
+admin.site.register(model.Subcategory)
+admin.site.register(model.SubSubcategory)
+admin.site.register(model.Item)
+
 
 
 
