@@ -1,0 +1,15 @@
+.datatable-header-inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.visible-max992-block {
+  display: none;
+}
+
+@media screen and (max-width: 992px){
+  .visible-max992-block {
+    display: block;
+  }
+}
