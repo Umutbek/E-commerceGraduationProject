@@ -11,4 +11,5 @@ router.register(r'client', views.UserViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path("login/", views.LoginAPI.as_view()),
+    path('getinfo/', views.GetMeView.as_view())
 ]

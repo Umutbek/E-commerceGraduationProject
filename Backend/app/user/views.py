@@ -44,3 +44,14 @@ class LoginAPI(APIView):
         userdata = serializers.UserSerializer(info, many=True)
         token, created = Token.objects.get_or_create(user=user)
         return Response({"token": token.key, 'data': userdata.data}, status=200)
+
+
+class GetMeView(generics.RetrieveUpdateAPIView):
+    """Manage the authenticated user"""
+    serializer_class = serializers.UserSerializer
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        """Retrieve and return authentication user"""
+        return self.request.user
