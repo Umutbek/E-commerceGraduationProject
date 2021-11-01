@@ -1,8 +1,9 @@
 import React from "react"
 import {BrowserRouter} from "react-router-dom"
 import ServerServiceContext from "./contexts/ServerServiceContext"
+//import ServerService from "./services/ServerService"
 import {Provider} from "react-redux"
-import store from "./app/store"
+import store from "./redux/store"
 
 import {ReactReduxFirebaseProvider} from "react-redux-firebase"
 import firebase from "firebase"

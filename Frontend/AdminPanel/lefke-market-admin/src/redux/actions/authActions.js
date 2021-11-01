@@ -8,7 +8,7 @@ import {
   LOGIN_LOADING,
   CLEAR_ERROR,
 } from "../types/authTypes"
-const _baseApi = process.env.REACT_APP_BASE_API
+import {_baseApi} from "../../services/ServerService"
 import {ERRORS} from "../../constants/errors"
 
 

@@ -1,15 +1,21 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
-import App from './App';
+import React from 'react'
+import { shallow } from 'enzyme/build'
+import App from './App'
+import ChartLineSimple from './views/charts/ChartLineSimple'
+import Dashboard from './views/dashboard/Dashboard.js'
 
-test('renders learn react link', () => {
-  const { getByText } = render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
-});
+it('mounts App without crashing', () => {
+  const wrapper = shallow(<App/>)
+  wrapper.unmount()
+})
+
+it('mounts Dashboard without crashing', () => {
+  const wrapper = shallow(<Dashboard/>)
+  wrapper.unmount()
+})
+
+it('mounts Charts without crashing', () => {
+  const wrapper = shallow(<ChartLineSimple/> )
+  wrapper.unmount()
+})
