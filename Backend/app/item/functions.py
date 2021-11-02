@@ -1,4 +1,4 @@
-from item import models
+from item import models, firestore
 
 def create_cart(self,serializer):
 
@@ -9,7 +9,6 @@ def create_cart(self,serializer):
     item = models.Item.objects.get(id=itemid)
     mystore = models.Store.objects.get(id=store)
     myuser = models.RegularAccount.objects.get(id=client)
-
 
     if itemwithquant:
         for i in itemwithquant:
@@ -39,3 +38,34 @@ def create_cart(self,serializer):
             for q in newitemwithquant:
                 i.listitem.add(q)
                 i.save()
+
+
+def create_order_in_firebase(saved_data, currentuser):
+
+    data = {
+        u'id': saved_data.id, u'clientId': saved_data.clientId.id, u'storeId': saved_data.storeId.id,
+        u'phone': saved_data.clientId.phone, u'status': saved_data.status, u'totalprice': saved_data.totalprice,
+        u'totalcount': saved_data.totalcount, u'ordertype': saved_data.ordertype, u'declinereason': saved_data.declinereason,
+        u'address': saved_data.address, u'comment': saved_data.comment, u'date': saved_data.date
+    }
+    firestore.db.collection(u'stores').document(str(saved_data.storeId.id)).collection(u'orders').document(
+        str(saved_data.id)).set(data)
+
+    for i in saved_data.cart.listitem.all():
+
+        item = {
+            u'id': i.item.id, u'name': i.item.name, u'cost': i.item.cost, u'total': i.total,
+            u'quantity': i.quantity
+        }
+        firestore.db.collection(u'stores').document(str(saved_data.storeId.id)).collection(u'orders').document(
+            str(saved_data.id)).collection(u'items').document(
+            str(i.item.id)).set(item)
+
+    saved_data.cart.visibility = False
+    for i in saved_data.cart.listitem.all():
+        print(i)
+        i.visibility = False
+        print("After", i.visibility)
+        i.save()
+
+    saved_data.cart.save()

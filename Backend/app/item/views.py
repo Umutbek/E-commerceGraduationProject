@@ -94,3 +94,11 @@ class ClientOrderViewSet(viewsets.ModelViewSet):
             return serializers.GetClientOrderSerializer
         return serializers.ClientOrderSerializer
 
+
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.ClientOrderSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        saved_data = serializer.save()
+        functions.create_order_in_firebase(saved_data, self.request.user.username)
+        return Response(serializer.data)
+

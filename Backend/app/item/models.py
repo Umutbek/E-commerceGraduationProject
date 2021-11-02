@@ -1,7 +1,7 @@
 from django.db import models
 from user.models import User, Store, RegularAccount
 import requests
-from item import utils
+from item import utils, firestore
 from django_fsm import FSMIntegerField, transition
 
 
@@ -108,3 +108,20 @@ class ModelOrder(models.Model):
         queryset = self.cart.listitem.all().aggregate(
             totalcount=models.Sum('quantity'))
         return queryset['totalcount']
+
+
+    def save(self, *args, **kwargs):
+
+        if self.status == 2:
+            firestore.db.collection(u'stores').document(str(self.storeId.id)).collection(u'orders').document(str(self.id)).update({"status": 2})
+
+        elif self.status == 3:
+            firestore.db.collection(u'stores').document(str(self.storeId.id)).collection(u'orders').document(str(self.id)).update({"status": 3})
+
+        elif self.status == 4:
+            firestore.db.collection(u'stores').document(str(self.storeId.id)).collection(u'orders').document(str(self.id)).update({"status": 4})
+
+        elif self.status == 5:
+            firestore.db.collection(u'stores').document(str(self.storeId.id)).collection(u'orders').document(str(self.id)).update({"status": 5, "declinereason": self.declinereason})
+
+        super(ModelOrder, self).save(*args, **kwargs)
