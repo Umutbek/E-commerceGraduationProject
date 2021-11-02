@@ -82,3 +82,15 @@ class CartViewSet(viewsets.ModelViewSet):
                 i.delete()
             cart.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ClientOrderViewSet(viewsets.ModelViewSet):
+    """Manage clientorder"""
+    serializer_class = serializers.ClientOrderSerializer
+    queryset = models.ModelOrder.objects.all().order_by('-id')
+
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return serializers.GetClientOrderSerializer
+        return serializers.ClientOrderSerializer
+

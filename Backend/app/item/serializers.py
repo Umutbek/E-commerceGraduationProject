@@ -79,3 +79,31 @@ class ModelPostCartSerializer(serializers.Serializer):
         itemid = self.validated_data['itemid']
         client = self.validated_data['client']
         store = self.validated_data['store']
+
+
+class ClientOrderSerializer(serializers.ModelSerializer):
+    """Serializer for client order"""
+    class Meta:
+        model = models.ModelOrder
+        fields = (
+            'id', 'clientId', 'storeId', 'ordertype', 'totalprice',
+            'address', 'declinereason', 'status',
+            'comment', 'date', 'cart'
+        )
+        read_only_fields = ('id',)
+
+
+class GetClientOrderSerializer(serializers.ModelSerializer):
+    """Serializer for client order"""
+    storeId = StoreSerializer()
+    clientId = RegularAccountSerializer()
+    cart = QuantityItemSerializer()
+
+    class Meta:
+        model = models.ModelOrder
+        fields = (
+            'id', 'clientId', 'storeId', 'ordertype', 'totalprice',
+            'address', 'declinereason', 'status',
+            'comment', 'date', 'cart'
+        )
+        read_only_fields = ('id',)

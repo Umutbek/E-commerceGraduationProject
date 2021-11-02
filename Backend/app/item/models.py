@@ -1,6 +1,8 @@
 from django.db import models
 from user.models import User, Store, RegularAccount
 import requests
+from item import utils
+from django_fsm import FSMIntegerField, transition
 
 
 class Category(models.Model):
@@ -82,8 +84,27 @@ class ModelCart(models.Model):
         return self.listitem.count()
 
 
+class ModelOrder(models.Model):
+    """Model for client order"""
+    clientId = models.ForeignKey(RegularAccount, on_delete=models.CASCADE, related_name="clientId", null=True, blank=True)
+    storeId = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="storeId")
+    status = FSMIntegerField(choices=utils.OrderStatuses.choices, default=utils.OrderStatuses.New)
+    ordertype = FSMIntegerField(choices=utils.OrderType.choices, default=utils.OrderType.delivery)
+    declinereason = models.CharField(max_length=200, null=True, blank=True)
 
+    address = models.TextField()
+    comment = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    cart = models.ForeignKey(ModelCart, on_delete=models.SET_NULL, null=True, blank=True)
 
+    @property
+    def totalprice(self):
+        queryset = self.cart.listitem.all().aggregate(
+            totalprice=models.Sum('total'))
+        return queryset['totalprice']
 
-
-
+    @property
+    def totalcount(self):
+        queryset = self.cart.listitem.all().aggregate(
+            totalcount=models.Sum('quantity'))
+        return queryset['totalcount']
