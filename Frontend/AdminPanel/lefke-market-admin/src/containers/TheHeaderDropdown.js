@@ -38,10 +38,10 @@ const TheHeaderDropdown = () => {
               src={user.avatar}
               className="c-avatar-img"
               alt="user-profile-avatar"
-            /> :  user.name ? user.name[0] : ''
+            /> :  user.username ? user.username[0] : ''
           }
         </div>
-        <div className="ml-3">{ user.name }
+        <div className="ml-3">{ user.username }
           <span className="ml-1">
             <svg width={18} height={18} version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlnsXlink="http://www.w3.org/1999/xlink" enableBackground="new 0 0 129 129">
               <g>

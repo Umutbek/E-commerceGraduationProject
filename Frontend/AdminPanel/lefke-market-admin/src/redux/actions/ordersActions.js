@@ -19,6 +19,7 @@ export const fetchAllOrders = (firestore) => async (dispatch, getState) => {
     .onSnapshot(async querySnapshot => {
       const docs = []
       querySnapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }))
+      console.log('orders in fetchAllOrders: ', docs)
       dispatch(saveOrders(docs))
     }, error => {
       dispatch(fetchOrdersError(error.toString()))
