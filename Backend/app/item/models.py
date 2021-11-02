@@ -49,6 +49,39 @@ class Item(models.Model):
         return self.name
 
 
+class ItemWithQuantity(models.Model):
+    """Item with quantity in cart"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="user")
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    total = models.IntegerField(default=0)
+
+    def save(self):
+        self.total=self.item.cost * self.quantity
+        super(ItemWithQuantity, self).save()
+
+    class Meta:
+        ordering = ('-id',)
+
+
+class ModelCart(models.Model):
+    """Model for cart(busket)"""
+    listitem = models.ManyToManyField('ItemWithQuantity')
+    clientid = models.ForeignKey(RegularAccount, on_delete=models.CASCADE, null=True, blank=True, related_name="usercart")
+    storeid = models.ForeignKey(Store, on_delete=models.CASCADE, null=True, related_name="storeidforcard")
+    check = models.IntegerField(null=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+
+    @property
+    def total_price(self):
+        queryset = self.listitem.all().aggregate(
+            total_price=models.Sum('total'))
+        return queryset['total_price']
+
+    def count_cart(self):
+        return self.listitem.count()
+
+
 
 
 

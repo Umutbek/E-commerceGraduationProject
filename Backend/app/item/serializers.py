@@ -4,6 +4,7 @@ from django.conf import settings
 from item import models
 from user.models import Store
 from django.utils.translation import ugettext_lazy as _
+from user.serializers import RegularAccountSerializer, StoreSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -47,3 +48,34 @@ class GetItemSerializer(serializers.ModelSerializer):
                   'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount', 'publishDate')
         read_only_fields = ('id',)
         depth=1
+
+
+class QuantityItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ItemWithQuantity
+        fields = ('id', 'item', 'total', 'quantity')
+        depth = 1
+
+
+class ModelCartSerializer(serializers.ModelSerializer):
+    listitem = QuantityItemSerializer(many=True)
+    clientid = RegularAccountSerializer()
+    storeid = StoreSerializer()
+
+    """Get cart(busket)"""
+    class Meta:
+        model = models.ModelCart
+        fields = ('id', 'listitem', 'clientid', 'storeid', 'check', 'total_price')
+        read_only_fields = ('id',)
+
+
+class ModelPostCartSerializer(serializers.Serializer):
+    """Create new cart"""
+    itemid = serializers.IntegerField()
+    client = serializers.IntegerField()
+    store = serializers.IntegerField()
+
+    def save(self):
+        itemid = self.validated_data['itemid']
+        client = self.validated_data['client']
+        store = self.validated_data['store']

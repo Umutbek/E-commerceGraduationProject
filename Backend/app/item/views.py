@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, generics
 
-from item import models, serializers
+from item import models, serializers, functions
 from django.shortcuts import get_object_or_404
 
 from django.db.models import Sum, Count, F, Q
@@ -50,3 +50,35 @@ class ItemViewSet(viewsets.ModelViewSet):
             return serializers.GetItemSerializer
 
         return serializers.ItemSerializer
+
+
+class CartViewSet(viewsets.ModelViewSet):
+    """Manage Cart(Busket)"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = models.ModelCart.objects.all()
+    pagination_class = None
+
+    def get_queryset(self):
+        return self.queryset.filter(clientid=self.request.user).order_by('-id')
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return serializers.ModelPostCartSerializer
+        return serializers.ModelCartSerializer
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.ModelPostCartSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        functions.create_cart(self, serializer)
+
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        cart = self.get_object()
+        if cart:
+            for i in cart.listitem.all():
+                i.delete()
+            cart.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
