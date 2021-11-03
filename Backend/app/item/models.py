@@ -46,6 +46,7 @@ class Item(models.Model):
     issale = models.BooleanField(default=False)
     discount = models.CharField(max_length=200, null=True, blank=True)
     publishDate = models.DateTimeField(auto_now_add=True)
+    image = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
