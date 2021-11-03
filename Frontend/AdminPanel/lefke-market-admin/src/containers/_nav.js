@@ -11,7 +11,25 @@ const _nav =  [
       color: 'warning',
       text: '',
     }
-  }
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Products',
+    route: '/products',
+    icon: 'cil-puzzle',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'New product',
+        to: '/products/create',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'List of products',
+        to: '/products',
+      },
+    ],
+  },
 ]
 
 export default _nav

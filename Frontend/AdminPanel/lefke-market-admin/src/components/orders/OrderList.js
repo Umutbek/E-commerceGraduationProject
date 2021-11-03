@@ -14,6 +14,7 @@ import FullContentSpinner from "../spinners/FullContentSpinner"
 import {statuses} from "../../constants/orders"
 import {toNormalDate} from "../../helpers/time"
 import {useFirestore} from "react-redux-firebase"
+import ServerServiceContext from "../../contexts/ServerServiceContext"
 import WithBgSpinner from "../spinners/WithBgSpinner"
 import OrderInfo from "./OrderInfo"
 import {toast} from "react-toastify"
@@ -22,12 +23,12 @@ function OrdersList({ status = 'all' }) {
 
   const firestore = useFirestore()
   const userId = useSelector(state => state.auth.user.id)
-
+  const serverService = useContext(ServerServiceContext)
 
   const {orders, isOrdersLoading} = useSelector(state => state.orders)
+  const [isItemsLoading, setIsItemsLoading] = useState(false)
 
   const [orderItems, setOrderItems] = useState([])
-  const [isItemsLoading, setIsItemsLoading] = useState(false)
 
   const [firestoreLoading, setFirestoreLoading] = useState(false)
 
@@ -62,16 +63,6 @@ function OrdersList({ status = 'all' }) {
     setOrderItems([])
   }, [])
 
-  const onAccept = useCallback(async () => {
-    await updateOrderStatus(userId, selectedOrder, statuses.PACKING)
-    closeOrderModal()
-  }, [selectedOrder])
-
-  const onReady = useCallback(async () => {
-    await updateOrderStatus(userId, selectedOrder, statuses.ON_WAY)
-    closeOrderModal()
-  }, [selectedOrder])
-
   const [declineReason, setDeclineReason] = useState('')
   const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false)
 
@@ -83,26 +74,34 @@ function OrdersList({ status = 'all' }) {
   const closeDeclineModal = useCallback(() => setIsDeclineModalOpen(false), [])
 
   const updateOrderStatus = useCallback(async (usrId, order, newStatus, reason = '') => {
-    setFirestoreLoading(true)
+
+    closeOrderModal()
 
     try {
-       await firestore.collection("stores")
-         .doc(userId.toString())
-         .collection("orders")
-         .doc(order.id)
-         .update({ orderStatus: newStatus, declineReason: reason })
-
-    } catch (e) {
-      toast.error('Status update failed')
-    } finally {
-      setFirestoreLoading(false)
+      const { hasError, data } = await serverService.updateOrderStatus(order.id, newStatus, reason)
+      if (hasError){
+        toast.error('Something went wrong')
+      }
     }
+    catch (e) {
+      toast.error("Null deytko")
+    }
+
+    closeDeclineModal()
+    closeOrderModal()
   }, [firestore])
+
+
+  const onAccept = useCallback(async () => {
+    await updateOrderStatus(userId, selectedOrder, statuses.PACKING)
+  }, [selectedOrder])
+
+  const onReady = useCallback(async () => {
+    await updateOrderStatus(userId, selectedOrder, statuses.ON_WAY)
+  }, [selectedOrder])
 
   const onDecline = useCallback(async () => {
     await updateOrderStatus(userId, selectedOrder, statuses.DECLINED, declineReason)
-    closeDeclineModal()
-    closeOrderModal()
   }, [selectedOrder, declineReason])
 
   const actions = {
@@ -179,7 +178,7 @@ function OrdersList({ status = 'all' }) {
               'totalCost':
                 (item)=>(
                   <td>
-                    {item.totalprice} <span className="TL">c</span>
+                    {item.totalprice} <span className="TL">TL</span>
                   </td>
                 ),
             }}
