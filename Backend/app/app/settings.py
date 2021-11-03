@@ -139,12 +139,12 @@ USE_L10N = True
 USE_TZ = True
 
 # Allows any client access.
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://localhost:5000',
-    'http://161.35.117.26',
-)
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:3000',
+#     'http://localhost:5000',
+#     'http://161.35.117.26',
+# )
 
 
 # Static files (CSS, JavaScript, Images)
@@ -166,5 +166,3 @@ try:
     from .local_settings import *
 except ImportError:
     pass
-
-
