@@ -9,10 +9,10 @@ class OrderStatuses(models.IntegerChoices):
     ClientReject = 6, 'Declined by client'
 
 class OrderType(models.IntegerChoices):
-    delivery = 1, 'C доставкой'
-    pickup = 2, 'Самовывоз'
+    delivery = 1, 'Delivery'
+    pickup = 2, 'Pick up'
 
 
 class PaymentType(models.IntegerChoices):
-    cash = 1, 'Наличными'
-    cart = 2, 'С картой'
+    cash = 1, 'Cash'
+    cart = 2, 'Online payment'
