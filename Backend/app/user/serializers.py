@@ -83,7 +83,7 @@ class LoginSerializer(serializers.Serializer):
         )
 
         if not user:
-            msg = _('Неправильный логин или пароль')
+            msg = _('Incorrect login or password!!!')
             raise serializers.ValidationError({'detail': msg}, code='authorization')
 
         data['user']= user
