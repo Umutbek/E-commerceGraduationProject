@@ -38,6 +38,9 @@ admin.site.register(model.Subcategory)
 admin.site.register(model.SubSubcategory)
 admin.site.register(model.Item)
 admin.site.register(model.ModelOrder)
+admin.site.register(model.ModelCart)
+admin.site.register(model.ItemWithQuantity)
+
 
 
 
