@@ -6,6 +6,7 @@ import {setScreenType} from "../src/redux/states/settings/actions"
 
 import {Provider} from "react-redux"
 import {AppBar, Hidden, useMediaQuery} from "@material-ui/core"
+import theme from '../src/theme/theme'
 
 import CollapseOnScroll from "../src/components/onScroll/collapseOnScroll"
 import DesktopHeader from "../src/components/header/desktop/desktop-header"
@@ -66,16 +67,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       <title>Lefke Market</title>
     </Head>
-    <CssBaseline />
-      <Hidden only={["xs", "sm", "md"]}>
-        <DesktopHeader/>
-      </Hidden>
-      <Hidden only={["lg", "xl"]}>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
 
-        <MobileHeader/>
-      </Hidden>
+        <div className={classes.siteContent} id="scroller">
+          <Hidden only={["xs", "sm", "md"]}>
+            <DesktopHeader/>
+          </Hidden>
 
-      <Component {...pageProps} />
+          <Hidden only={["lg", "xl"]}>
+
+            <MobileHeader/>
+          </Hidden>
+
+          <Component {...pageProps} />
+        </div>
+      </ThemeProvider>
+    </Provider>
   </>
 }
 
