@@ -1,5 +1,12 @@
 import React, {useEffect} from "react"
 import '../styles/globals.css'
+
+import SwiperCore, {A11y, Navigation, Pagination, Scrollbar} from 'swiper'
+import 'swiper/swiper.scss'
+import 'swiper/components/navigation/navigation.scss'
+import 'swiper/components/pagination/pagination.scss'
+import 'swiper/components/scrollbar/scrollbar.scss'
+
 import {makeStyles, ThemeProvider} from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import {setScreenType} from "../src/redux/states/settings/actions"
@@ -7,7 +14,7 @@ import {setScreenType} from "../src/redux/states/settings/actions"
 import {Provider} from "react-redux"
 import {AppBar, Hidden, useMediaQuery} from "@material-ui/core"
 import theme from '../src/theme/theme'
-
+import MobileBottomNavigation from "../src/components/mobile/MobileBottomNavigation"
 import CollapseOnScroll from "../src/components/onScroll/collapseOnScroll"
 import DesktopHeader from "../src/components/header/desktop/desktop-header"
 import MobileHeader from "../src/components/header/mobile/mobile-header"
@@ -15,8 +22,10 @@ import {ScreenTypes} from "../src/constants"
 
 import {initStore} from "../src/redux/store"
 import Head from 'next/head'
+
 const store = initStore()
 
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y])
 
 const useStyles = makeStyles({
   siteContent: {
@@ -70,6 +79,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+          <Hidden only={["lg", "xl"]}>
+            <CollapseOnScroll component={AppBar} threshold={400}>
+              <div className={classes.bottomNavContainer}>
+                <MobileBottomNavigation/>
+              </div>
+            </CollapseOnScroll>
+          </Hidden>
 
         <div className={classes.siteContent} id="scroller">
           <Hidden only={["xs", "sm", "md"]}>

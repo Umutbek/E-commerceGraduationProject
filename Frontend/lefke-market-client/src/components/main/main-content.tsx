@@ -3,8 +3,6 @@ import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import React from "react"
-
-
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 import ProductContainer from "../products/ProductContainer"
 import {renderProducts} from "../products/ProductItem"
