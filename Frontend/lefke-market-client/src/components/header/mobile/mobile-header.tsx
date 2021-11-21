@@ -62,6 +62,11 @@ const buttonStyle = {
 export default function MobileHeader(){
 
     const classes = useStyles()
+    const dispatch = useDispatch()
+
+    const onOpenCategory = useCallback(() => {
+        dispatch(openCategoryDrawer())
+    }, [dispatch])
 
     return <>
             <CollapseOnScroll component={AppBar} threshold={400}>
@@ -79,6 +84,7 @@ export default function MobileHeader(){
                             <Button
                                 variant={"contained"}
                                 style={buttonStyle}
+                                onClick={onOpenCategory}
                             >
                                 <Image src={'/icons/Category_gray.png'} width={18} height={18}/>
                                 <span className={classes.buttonText}>

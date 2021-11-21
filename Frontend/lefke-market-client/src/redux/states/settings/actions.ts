@@ -4,4 +4,11 @@ export const setScreenType = (screenType: number) => ({
     type: SET_SCREEN,
     payload: screenType
 })
+export const openCategoryDrawer = () => ({
+    type: OPEN_CATEGORY_DRAWER
+})
+
+export const closeCategoryDrawer = () => ({
+    type: CLOSE_CATEGORY_DRAWER
+})
 

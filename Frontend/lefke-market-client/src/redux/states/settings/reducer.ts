@@ -3,6 +3,7 @@ import {ScreenTypes} from "../../../constants"
 
 export interface ISettings {
     screenType: number
+    isCategoryDrawerOpen: boolean
 }
 
 export interface IAction {
@@ -12,6 +13,7 @@ export interface IAction {
 
 const initialState: ISettings = {
     screenType: ScreenTypes.desktop,
+    isCategoryDrawerOpen: false,
 }
 
 
@@ -22,6 +24,17 @@ export default function settingsReducer(state: ISettings = initialState, action:
                 ...state,
                 screenType: action.payload
             }
+        case OPEN_CATEGORY_DRAWER:
+            return {
+                ...state,
+                isCategoryDrawerOpen: true
+            }
+        case CLOSE_CATEGORY_DRAWER:
+            return {
+                ...state,
+                isCategoryDrawerOpen: false
+            }
+
         default:
             return {
                 ...state

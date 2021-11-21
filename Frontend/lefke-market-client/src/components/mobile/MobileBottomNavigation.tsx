@@ -36,7 +36,6 @@ export default function MobileBottomNavigation() {
         <BottomNavigation value={value} onChange={handleChange} className={classes.root} showLabels color="green">
             <BottomNavigationAction label="Main" value="/" icon={<HomeIcon />} />
             <BottomNavigationAction label="Stores" value="/stores" icon={<ViewListIcon />} />
-            <BottomNavigationAction label="Chat" value="/chat" icon={<ChatIcon />} />
             <BottomNavigationAction label="Busket" value="/cart" icon={<ShoppingCartIcon />} />
             <BottomNavigationAction label="Profile" value="/profile" icon={<PersonIcon />} />
         </BottomNavigation>

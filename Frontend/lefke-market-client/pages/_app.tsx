@@ -19,9 +19,10 @@ import CollapseOnScroll from "../src/components/onScroll/collapseOnScroll"
 import DesktopHeader from "../src/components/header/desktop/desktop-header"
 import MobileHeader from "../src/components/header/mobile/mobile-header"
 import {ScreenTypes} from "../src/constants"
-
+import CategoryDrawer from "../src/components/drawer/category-drawer";
 import {initStore} from "../src/redux/store"
 import Head from 'next/head'
+import NextNprogress from 'nextjs-progressbar'
 
 const store = initStore()
 
@@ -79,6 +80,14 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+
+        <NextNprogress
+            color="#29D"
+            startPosition={0.3}
+            stopDelayMs={200}
+            height={3}
+            showOnShallow={true}
+        />
           <Hidden only={["lg", "xl"]}>
             <CollapseOnScroll component={AppBar} threshold={400}>
               <div className={classes.bottomNavContainer}>
@@ -99,6 +108,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
           <Component {...pageProps} />
         </div>
+        <CategoryDrawer/>
       </ThemeProvider>
     </Provider>
   </>

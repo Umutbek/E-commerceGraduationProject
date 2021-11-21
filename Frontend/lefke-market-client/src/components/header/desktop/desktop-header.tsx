@@ -6,6 +6,7 @@ import {AppBar, Button} from "@material-ui/core";
 import Link from 'next/link'
 import {useDispatch} from "react-redux"
 import {useCallback} from "react"
+import {openCategoryDrawer} from "../../../redux/states/settings/actions"
 
 
 const useStyles = makeStyles({
@@ -87,6 +88,12 @@ export default function DesktopHeader(){
 
     const classes = useStyles()
 
+    const dispatch = useDispatch()
+
+    const onOpenCategory = useCallback(() => {
+        dispatch(openCategoryDrawer())
+    }, [dispatch])
+
     return (
         <>
             <DesktopHeaderTop/>
@@ -97,7 +104,48 @@ export default function DesktopHeader(){
                         <div className={classes.navbarContent}>
                             <ul className={classes.navbarLeft}>
                                 <li className={classes.logoContainer}>
-                                    <Image src={'/icons/test.png'} layout={"fill"} objectFit={"contain"} alt="Lefke market"/>
+                                    <Image src={'/icons/Logo.png'} layout={"fill"} objectFit={"contain"} alt="Lefke market"/>
+                                </li>
+                                <li style={{ marginLeft: 32 }}>
+                                    <Button
+                                        variant="contained"
+                                        onClick={onOpenCategory}
+                                        style={{
+                                            backgroundColor: '#0AAD3B',
+                                            backgroundImage: `url(icons/Category.png)`,
+                                            backgroundSize: '18px 18px',
+                                            backgroundPosition: 'top 13px left 25.5px',
+                                            backgroundRepeat: 'no-repeat',
+                                            height: 44,
+                                            padding: '0 25px 0 54.5px',
+                                            color: '#fff',
+                                            fontWeight: 500,
+                                            fontSize: '16px',
+                                            lineHeight: '24px',
+                                            textTransform: 'capitalize',
+                                        }}
+                                    >
+                                        Category
+                                    </Button>
+                                </li>
+                                <li style={{ marginLeft: 16 }}>
+                                    <Button variant="contained" style={{
+                                        backgroundColor: '#fff',
+                                        border: '1px solid #0AAD3B',
+                                        backgroundImage: `url(icons/Store.png)`,
+                                        backgroundSize: '18px 18px',
+                                        backgroundPosition: 'top 13px left 25.5px',
+                                        backgroundRepeat: 'no-repeat',
+                                        height: 44,
+                                        padding: '0 25px 0 54.5px',
+                                        color: '#0AAD3B',
+                                        fontWeight: 500,
+                                        fontSize: '16px',
+                                        lineHeight: '24px',
+                                        textTransform: 'capitalize',
+                                    }}>
+                                        Stores
+                                    </Button>
                                 </li>
 
                                 <li className={classes.search}>
