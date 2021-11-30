@@ -16,6 +16,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters import FilterSet
 from django_filters import rest_framework as filters
 from item import filters
+from .service import get_client_ip
+
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """Manage category"""
@@ -61,15 +63,41 @@ class ItemViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = filters.ItemFilter
 
-    ordering_fields = ('cost',)
+    ordering_fields = ('views', 'cost',)
 
     search_fields = ('name',)
+
+    def get_queryset(self):
+        """Retrieve the favourite stores for the authenticated user only"""
+
+        item = self.queryset.all().order_by('?').annotate(
+            views=Count('item_views')
+        )
+
+        return item
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return serializers.GetItemSerializer
 
         return serializers.ItemSerializer
+
+
+    def retrieve(self, request, *args, **kwargs):
+        item = self.get_object()
+        print(item.name)
+        ip = get_client_ip(self.request)
+        if models.IpModel.objects.filter(ip=ip).exists():
+            item.item_views.add(models.IpModel.objects.get(ip=ip))
+        else:
+            models.IpModel.objects.create(ip=ip)
+            item.item_views.add(models.IpModel.objects.get(ip=ip))
+
+        item.views = item.item_views.count()
+        item.save()
+
+        serializer = serializers.GetItemSerializer(item)
+        return Response(serializer.data)
 
 
 class CartViewSet(viewsets.ModelViewSet):

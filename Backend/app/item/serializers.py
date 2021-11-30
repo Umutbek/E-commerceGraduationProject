@@ -33,18 +33,23 @@ class SubSubcategorySerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
     """Serializer for Item"""
+    views = serializers.SerializerMethodField()
+
     class Meta:
         model = models.Item
-        fields = ('id', 'name', 'description', 'cost', 'category', 'image',
-                  'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount', 'publishDate')
+        fields = ('id', 'name', 'description', 'cost', 'category', 'image', 'views',
+                  'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount',
+                  'publishDate')
         read_only_fields = ('id',)
 
 
 class GetItemSerializer(serializers.ModelSerializer):
     """Serializer for Item"""
+    views = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = models.Item
-        fields = ('id', 'name', 'description', 'cost', 'category', 'image', 'slug',
+        fields = ('id', 'name', 'description', 'cost', 'category', 'image', 'slug', 'views',
                   'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount', 'publishDate')
         read_only_fields = ('id',)
         depth=1

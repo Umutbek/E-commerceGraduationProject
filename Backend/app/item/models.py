@@ -3,8 +3,9 @@ from user.models import User, Store, RegularAccount
 import requests
 from item import utils, firestore
 from django_fsm import FSMIntegerField, transition
-from app.utils import unique_slug_generator
+from app.utils import unique_slug_generator, unique_item_slug_generator
 from django.db.models.signals import pre_save
+from django.utils.translation import ugettext_lazy as _
 
 
 class Category(models.Model):
@@ -39,6 +40,18 @@ class SubSubcategory(models.Model):
         return self.nameEn
 
 
+class IpModel(models.Model):
+    """User IP addresses"""
+    ip = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.ip
+
+    class Meta:
+        verbose_name = _("User IP address")
+        verbose_name_plural = _("User IP addresses")
+
+
 class Item(models.Model):
     """Item model"""
     name = models.CharField(max_length=200)
@@ -53,6 +66,7 @@ class Item(models.Model):
     discount = models.CharField(max_length=200, null=True, blank=True)
     publishDate = models.DateTimeField(auto_now_add=True)
     image = models.TextField(null=True, blank=True)
+    item_views = models.ManyToManyField(IpModel, related_name="post_views", blank=True)
 
     def __str__(self):
         return self.name
@@ -141,4 +155,10 @@ def slug_generator(sender, instance, *args, **kwargs):
 pre_save.connect(slug_generator, sender=Category)
 pre_save.connect(slug_generator, sender=Subcategory)
 pre_save.connect(slug_generator, sender=SubSubcategory)
-pre_save.connect(slug_generator, sender=Item)
+
+
+def slug_item_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_item_slug_generator(instance)
+
+pre_save.connect(slug_item_generator, sender=Item)
