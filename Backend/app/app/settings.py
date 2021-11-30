@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'user.apps.UserConfig',
     'drf_yasg',
-    'item'
+    'item',
+    'django_filters'
 ]
 
 REST_FRAMEWORK = {

@@ -11,6 +11,11 @@ from django.db.models import Sum, Count, F, Q
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters import FilterSet
+from django_filters import rest_framework as filters
+from item import filters
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """Manage category"""
@@ -27,6 +32,10 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     serializer_class = serializers.SubcategorySerializer
     queryset = models.Subcategory.objects.all()
+
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = filters.SubCategoryFilter
+
     pagination_class = None
 
 
@@ -36,6 +45,10 @@ class SubSubcategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     serializer_class = serializers.SubSubcategorySerializer
     queryset = models.SubSubcategory.objects.all()
+
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = filters.SubSubCategoryFilter
+
     pagination_class = None
 
 
@@ -44,6 +57,13 @@ class ItemViewSet(viewsets.ModelViewSet):
     queryset = models.Item.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filter_class = filters.ItemFilter
+
+    ordering_fields = ('cost',)
+
+    search_fields = ('name',)
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':

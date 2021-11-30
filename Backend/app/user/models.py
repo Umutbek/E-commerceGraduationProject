@@ -9,6 +9,8 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django_fsm import FSMIntegerField, transition
 from user import utils
+from app.utils import unique_slug_generator
+from django.db.models.signals import pre_save
 
 
 class UserManager(BaseUserManager):
@@ -39,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     login = models.CharField(max_length=200, unique=True)
     email = models.CharField(max_length=200, blank=True, null=True)
     phone = models.CharField(max_length=200, blank=True, null=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     type = FSMIntegerField(choices=utils.UserTypes.choices, default=utils.UserTypes.USER)
     avatar = models.TextField(null=True, blank=True)
@@ -76,3 +79,10 @@ class RegularAccount(User):
     class Meta:
         verbose_name = _("Regular user")
         verbose_name_plural = _("Regular users")
+
+
+def slug_store_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(slug_store_generator, sender=User)

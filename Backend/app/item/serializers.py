@@ -11,7 +11,7 @@ class CategorySerializer(serializers.ModelSerializer):
     """Serializer for category"""
     class Meta:
         model = models.Category
-        fields = ('id', 'nameEn', 'nameTr', 'icon')
+        fields = ('id', 'nameEn', 'nameTr', 'icon', 'slug')
         read_only_fields = ('id',)
 
 
@@ -19,7 +19,7 @@ class SubcategorySerializer(serializers.ModelSerializer):
     """Serializer for sub category"""
     class Meta:
         model = models.Subcategory
-        fields = ('id', 'nameEn', 'nameTr', 'category')
+        fields = ('id', 'nameEn', 'nameTr', 'category', 'slug')
         read_only_fields = ('id',)
 
 
@@ -27,7 +27,7 @@ class SubSubcategorySerializer(serializers.ModelSerializer):
     """Serializer for sub sub category"""
     class Meta:
         model = models.SubSubcategory
-        fields = ('id', 'nameEn', 'nameTr', 'subcategory')
+        fields = ('id', 'nameEn', 'nameTr', 'subcategory', 'slug')
         read_only_fields = ('id',)
 
 
@@ -44,7 +44,7 @@ class GetItemSerializer(serializers.ModelSerializer):
     """Serializer for Item"""
     class Meta:
         model = models.Item
-        fields = ('id', 'name', 'description', 'cost', 'category', 'image',
+        fields = ('id', 'name', 'description', 'cost', 'category', 'image', 'slug',
                   'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount', 'publishDate')
         read_only_fields = ('id',)
         depth=1

@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username','login', 'phone', 'date', 'email', 'avatar', 'address', 'type')
+        fields = ('id', 'username','login', 'phone', 'date', 'slug', 'email', 'avatar', 'address', 'type')
         read_only_fields = ('id',)
 
     def create(self, validated_data):
@@ -33,7 +33,7 @@ class RegularAccountSerializer(UserSerializer):
 
     class Meta:
         model = models.RegularAccount
-        fields = ('id', 'username', 'login', 'phone', 'email', 'avatar', 'date', 'address',
+        fields = ('id', 'username', 'login', 'phone', 'email', 'avatar', 'date', 'slug', 'address',
                   'type', 'datebirth', 'gender', 'password'
                   )
         extra_kwargs = {'password':{'write_only':True},}
@@ -43,7 +43,7 @@ class StoreSerializer(UserSerializer):
 
     class Meta:
         model = models.Store
-        fields = ('id', 'username','login', 'phone', 'email', 'avatar', 'type', 'address', 'password',
+        fields = ('id', 'username','login', 'phone', 'email', 'slug', 'avatar', 'type', 'address', 'password',
                   'slogan', 'description')
 
         read_only_field = ('id',)

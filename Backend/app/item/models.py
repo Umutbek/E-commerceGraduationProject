@@ -3,6 +3,8 @@ from user.models import User, Store, RegularAccount
 import requests
 from item import utils, firestore
 from django_fsm import FSMIntegerField, transition
+from app.utils import unique_slug_generator
+from django.db.models.signals import pre_save
 
 
 class Category(models.Model):
@@ -10,6 +12,7 @@ class Category(models.Model):
     nameEn = models.CharField(max_length=200)
     nameTr = models.CharField(max_length=200)
     icon = models.CharField(max_length=1000, null=True, blank=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.nameEn
@@ -19,6 +22,7 @@ class Subcategory(models.Model):
     nameEn = models.CharField(max_length=200)
     nameTr = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.nameEn
@@ -29,6 +33,7 @@ class SubSubcategory(models.Model):
     nameEn = models.CharField(max_length=200)
     nameTr = models.CharField(max_length=200)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, null=True, blank=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.nameEn
@@ -43,6 +48,7 @@ class Item(models.Model):
     subcategory = models.ForeignKey(Subcategory, related_name="subcategory", on_delete=models.SET_NULL, null=True, blank=True)
     subsubcategory = models.ForeignKey(SubSubcategory, related_name="subsubcategory", on_delete=models.SET_NULL, null=True, blank=True)
     supplier = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
     issale = models.BooleanField(default=False)
     discount = models.CharField(max_length=200, null=True, blank=True)
     publishDate = models.DateTimeField(auto_now_add=True)
@@ -126,3 +132,13 @@ class ModelOrder(models.Model):
             firestore.db.collection(u'stores').document(str(self.storeId.id)).collection(u'orders').document(str(self.id)).update({"status": 5, "declinereason": self.declinereason})
 
         super(ModelOrder, self).save(*args, **kwargs)
+
+
+def slug_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(slug_generator, sender=Category)
+pre_save.connect(slug_generator, sender=Subcategory)
+pre_save.connect(slug_generator, sender=SubSubcategory)
+pre_save.connect(slug_generator, sender=Item)
