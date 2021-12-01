@@ -38,8 +38,17 @@ function ProductItemView({product}: IProductItemViewProps){
                 <div className={classes.rating}>
                     <Rating disabled rate={product.rating}/>
                 </div>
+
+                <Link href="/">
+                    <a className={`${classes.store} line-clamp-2`}>
+                        { product.supplier.username }
+                    </a>
+                </Link>
+
                 <Link href={`/product-details/${product.slug || product.id}`}>
-                    <a className={`${classes.name} line-clamp-2`}> { product.name } </a>
+                    <a className={`${classes.name} line-clamp-2`}>
+                    { product.name }
+                    </a>
                 </Link>
                 <div className={classes.price}>
                     { product.cost } <span className="TL">TL</span>
@@ -138,6 +147,25 @@ const useStyles = makeStyles({
         marginTop: 16,
         fontSize: '14px',
         fontWeight: 400,
+
+        '&:hover': {
+            textDecoration: 'underline',
+        },
+
+        '@media screen and (max-width: 1360px)': {
+            fontSize: '12px',
+            marginTop: 8,
+        }
+    },
+
+
+    store: {
+        width: '100%',
+        height: 15,
+        marginTop: 16,
+        fontSize: '14px',
+        fontWeight: 400,
+        color: '#0000FF',
 
         '&:hover': {
             textDecoration: 'underline',

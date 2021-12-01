@@ -15,6 +15,7 @@ interface IMainProductItemViewProps {
 function MainProductItemView({product}: IMainProductItemViewProps){
 
     const classes = useStyles()
+    console.log("Product " + product.supplier.username)
 
     return (
         <li className={classes.item}>
@@ -35,11 +36,17 @@ function MainProductItemView({product}: IMainProductItemViewProps){
                 <div className={classes.rating}>
                     <Rating disabled rate={product.rating}/>
                 </div>
+                <Link href="/">
+                    <a className={clsx(classes.store, 'line-clamp-2')}>
+                        { product.supplier.username }
+                    </a>
+                </Link>
                 <Link href={product.slug ? `/product-details/${product.slug}` : `/product-details/${product.id}`}>
                     <a className={clsx(classes.name, 'line-clamp-2')}>
                         { product.name }
                     </a>
                 </Link>
+
                 <span className={classes.price}>
                 { product.cost } <span className="TL">TL</span>
             </span>
@@ -126,11 +133,27 @@ const useStyles = makeStyles({
         }
     },
     name: {
-        height: 40,
+        height: 20,
         marginTop: 16,
         fontSize: '14px',
         fontWeight: 400,
 
+        [`@media screen and (max-width: ${BREAKPOINTS.LG})`]: {
+            fontSize: '12px',
+            marginTop: 8,
+        },
+
+        '&:hover': {
+            textDecoration: 'underline',
+        }
+    },
+
+    store: {
+        height: 15,
+        marginTop: 16,
+        fontSize: '14px',
+        fontWeight: 400,
+        color: '#0000FF',
         [`@media screen and (max-width: ${BREAKPOINTS.LG})`]: {
             fontSize: '12px',
             marginTop: 8,

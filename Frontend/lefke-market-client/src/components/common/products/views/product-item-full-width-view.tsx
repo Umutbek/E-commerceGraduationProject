@@ -32,6 +32,13 @@ function ProductItemFullWidthView({ product }: IProductItemFullWidthViewProps) {
                     </span>
                         <span>{ product.rating }</span>
                     </div>
+
+                    <Link href="/">
+                        <a className={clsx(classes.infoStore, 'line-clamp-2')}>
+                            { product.supplier.username }
+                        </a>
+                    </Link>
+
                     <Link href={`/product-details/${ product.slug || product.id }`}>
                         <a className={classes.infoName}>
                             { product.name }
@@ -132,6 +139,32 @@ const useStyles = makeStyles({
         fontSize: '20px',
         lineHeight: '24px',
         marginTop: 8,
+        display: '-webkit-box',
+        '-webkit-line-clamp': 2,
+        '-webkit-box-orient': 'vertical',
+        overflow: 'hidden',
+
+        '&:hover': {
+            textDecoration: 'underline'
+        },
+
+        [`@media screen and (max-width: ${BREAKPOINTS.MD})`]: {
+            fontSize: '14px',
+            lineHeight: '16px',
+            marginTop: 12,
+
+            display: '-webkit-box',
+            '-webkit-line-clamp': 1,
+            '-webkit-box-orient': 'vertical',
+            overflow: 'hidden',
+        }
+    },
+
+    infoStore: {
+        fontSize: '20px',
+        lineHeight: '24px',
+        marginTop: 8,
+        color: '#0000FF',
         display: '-webkit-box',
         '-webkit-line-clamp': 2,
         '-webkit-box-orient': 'vertical',
