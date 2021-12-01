@@ -1,66 +1,64 @@
-import React, {useEffect} from "react"
-import '../styles/globals.css'
+import {useEffect} from "react"
 
-import SwiperCore, {A11y, Navigation, Pagination, Scrollbar} from 'swiper'
+import SwiperCore, {Autoplay, Navigation, Pagination} from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/navigation/navigation.scss'
 import 'swiper/components/pagination/pagination.scss'
 import 'swiper/components/scrollbar/scrollbar.scss'
 
-import {makeStyles, ThemeProvider} from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import {setScreenType} from "../src/redux/states/settings/actions"
+import '../styles/react-phone-input-2.css'
+import '../styles/globals.css'
 
-import {Provider} from "react-redux"
-import {AppBar, Hidden, useMediaQuery} from "@material-ui/core"
-import theme from '../src/theme/theme'
-import MobileBottomNavigation from "../src/components/mobile/MobileBottomNavigation"
-import CollapseOnScroll from "../src/components/onScroll/collapseOnScroll"
-import DesktopHeader from "../src/components/header/desktop/desktop-header"
-import MobileHeader from "../src/components/header/mobile/mobile-header"
-import {ScreenTypes} from "../src/constants"
-import CategoryDrawer from "../src/components/drawer/category-drawer";
-import {initStore} from "../src/redux/store"
+import type {AppProps} from 'next/app'
 import Head from 'next/head'
+
+import makeStyles from "@mui/styles/makeStyles"
+import { ThemeProvider, Theme, StyledEngineProvider } from "@mui/material"
+import {CssBaseline} from "@mui/material"
+import theme from '../src/theme/theme'
+import {Provider} from "react-redux"
 import NextNprogress from 'nextjs-progressbar'
 
-const store = initStore()
+import ApiContext from "../src/helpers/api/api-context"
+import Api from "../src/helpers/api"
+import store from '../src/redux/store'
+import {SCREEN_TYPE} from "../src/enums"
+import ScrollToTop from "../src/components/common/scroll-to-top"
+import dynamic from "next/dynamic"
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, A11y])
+const DesktopCategoryDrawer = dynamic(() => import('../src/components/common/drawer/category/desktop-drawer'), { ssr: false })
+const MobileCategoryDrawer = dynamic(() => import('../src/components/common/drawer/category/mobile-drawer'), { ssr: false })
+const DesktopHeader = dynamic(() => import('../src/components/common/header/desktop-header'), { ssr: false })
+const MobileHeader = dynamic(() => import('../src/components/common/header/mobile-header'), { ssr: false })
+const MobileBottomNavigation = dynamic(() => import('../src/components/common/mobile-bottom-navigation'), { ssr: false })
+
+declare module '@mui/styles/defaultTheme' {
+  interface DefaultTheme extends Theme {}
+}
+
+SwiperCore.use([Navigation, Pagination, Autoplay])
 
 const useStyles = makeStyles({
+  site: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    justifyContent: 'space-between',
+
+  },
   siteContent: {
     position: 'relative',
+    backgroundColor: '#fff',
   },
-  bottomNavContainer: {
-    position: 'fixed',
-    bottom: 0,
-    width: '100%',
-  },
+  header: { },
 })
 
+const screenType = store.getState().settings.screenType
+
+
 function MyApp({ Component, pageProps }: AppProps) {
+
   const classes = useStyles()
-
-  const isLaptop = useMediaQuery('(max-width: 1360px')
-  const isMobile = useMediaQuery('(max-width: 768px')
-
-  useEffect(() => {
-
-    let screenType
-
-    if (isMobile){
-      screenType = ScreenTypes.mobile
-    } else if (isLaptop){
-      screenType = ScreenTypes.laptop
-    } else {
-      screenType = ScreenTypes.desktop
-    }
-
-    store.dispatch(setScreenType(screenType))
-
-  }, [isLaptop, isMobile])
-
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -69,48 +67,52 @@ function MyApp({ Component, pageProps }: AppProps) {
       // @ts-ignore
       jssStyles.parentElement.removeChild(jssStyles)
     }
+
+    // @ts-ignore
   }, [])
 
   return <>
     <Head>
-      <title>My page</title>
+      <meta name="facebook-domain-verification" content="6fkiiyeb9k0kyv17h5fm9606yn1rko" />
       <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      <title>Lefke Market</title>
+      <title>Lefke Market Website</title>
     </Head>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ApiContext.Provider value={new Api()}>
+        <Provider store={store}>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <NextNprogress
+                  color="#29D"
+                  startPosition={0.3}
+                  stopDelayMs={200}
+                  height={3}
+                  showOnShallow={true}
+              />
 
-        <NextNprogress
-            color="#29D"
-            startPosition={0.3}
-            stopDelayMs={200}
-            height={3}
-            showOnShallow={true}
-        />
-          <Hidden only={["lg", "xl"]}>
-            <CollapseOnScroll component={AppBar} threshold={400}>
-              <div className={classes.bottomNavContainer}>
-                <MobileBottomNavigation/>
+              { screenType === SCREEN_TYPE.DESKTOP ? <>
+                <DesktopHeader/>
+              </> : <>
+                <MobileHeader/>
+              </> }
+
+              <div className={classes.site}>
+                <div className={classes.siteContent} id="scroller">
+                  <Component {...pageProps} />
+                </div>
               </div>
-            </CollapseOnScroll>
-          </Hidden>
 
-        <div className={classes.siteContent} id="scroller">
-          <Hidden only={["xs", "sm", "md"]}>
-            <DesktopHeader/>
-          </Hidden>
-
-          <Hidden only={["lg", "xl"]}>
-
-            <MobileHeader/>
-          </Hidden>
-
-          <Component {...pageProps} />
-        </div>
-        <CategoryDrawer/>
-      </ThemeProvider>
-    </Provider>
+              { screenType !== SCREEN_TYPE.DESKTOP ? <>
+                <MobileCategoryDrawer storeName="global"/>
+                <MobileBottomNavigation/>
+              </> : <>
+                <DesktopCategoryDrawer storeName="global"/>
+              </> }
+              <ScrollToTop/>
+            </ThemeProvider>
+          </StyledEngineProvider>
+        </Provider>
+    </ApiContext.Provider>
   </>
 }
 

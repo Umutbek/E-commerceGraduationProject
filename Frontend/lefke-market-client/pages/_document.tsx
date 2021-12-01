@@ -1,7 +1,7 @@
-import React from 'react';
-import Document, { Html, Main, NextScript, Head } from "next/document";
+import {Children} from 'react'
+import Document, { Html, Main, NextScript, Head } from "next/document"
 
-import { ServerStyleSheets } from '@material-ui/core/styles';
+import ServerStyleSheets from '@mui/styles/ServerStyleSheets'
 
 export default class MyDocument extends Document {
     render() {
@@ -24,7 +24,7 @@ export default class MyDocument extends Document {
 // it's compatible with server-side generation (SSG).
 MyDocument.getInitialProps = async (ctx) => {
 
-    // Render app and page and get the context of the page with collected side effects.
+    // Render app and pages and get the context of the pages with collected side effects.
     const sheets = new ServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
 
@@ -36,7 +36,7 @@ MyDocument.getInitialProps = async (ctx) => {
 
     return {
         ...initialProps,
-        // Styles fragment is rendered after the app and page rendering finish.
-        styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
+        // Styles fragment is rendered after the app and pages rendering finish.
+        styles: [...Children.toArray(initialProps.styles), sheets.getStyleElement()],
     };
 };

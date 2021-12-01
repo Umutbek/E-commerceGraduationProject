@@ -1,40 +1,60 @@
-import {OPEN_CATEGORY_DRAWER, CLOSE_CATEGORY_DRAWER, SET_SCREEN} from "./types"
-import {ScreenTypes} from "../../../constants"
+import {CLOSE_AUTH_MODAL, CLOSE_CART_MODAL, OPEN_AUTH_MODAL, OPEN_CART_MODAL, SET_SCREEN} from "./types"
+import {SCREEN_TYPE} from "../../../enums"
+import {ISettings, ISettingsAction} from "./interfaces"
 
-export interface ISettings {
-    screenType: number
-    isCategoryDrawerOpen: boolean
+console.log('SETTINGS REDUCER')
+
+const getScreenType = () =>  {
+    if (typeof window !== 'undefined'){
+        console.log('window width: ', window.screen.width)
+        const windowWidth = window.screen.width
+
+
+        if (windowWidth < 600){
+            return SCREEN_TYPE.MOBILE
+        } else if (windowWidth < 960) {
+            return SCREEN_TYPE.MINI_LAPTOP
+        } else if (windowWidth < 1024) {
+            return SCREEN_TYPE.LAPTOP
+        }
+    }
+
+    return SCREEN_TYPE.DESKTOP
 }
 
-export interface IAction {
-    type: string,
-    payload: any
+export const settingsInitialState: ISettings = {
+    screenType: getScreenType(),
+    isAuthModalOpen: false,
+    isCartModalOpen: false,
 }
 
-const initialState: ISettings = {
-    screenType: ScreenTypes.desktop,
-    isCategoryDrawerOpen: false,
-}
-
-
-export default function settingsReducer(state: ISettings = initialState, action: IAction) {
+export default function settingsReducer(state: ISettings = settingsInitialState, action: ISettingsAction) {
     switch (action.type){
         case SET_SCREEN:
             return {
                 ...state,
                 screenType: action.payload
             }
-        case OPEN_CATEGORY_DRAWER:
+        case OPEN_AUTH_MODAL:
             return {
                 ...state,
-                isCategoryDrawerOpen: true
+                isAuthModalOpen: true
             }
-        case CLOSE_CATEGORY_DRAWER:
+        case CLOSE_AUTH_MODAL:
             return {
                 ...state,
-                isCategoryDrawerOpen: false
+                isAuthModalOpen: false
             }
-
+        case OPEN_CART_MODAL:
+            return {
+                ...state,
+                isCartModalOpen: true
+            }
+        case CLOSE_CART_MODAL:
+            return {
+                ...state,
+                isCartModalOpen: false
+            }
         default:
             return {
                 ...state
