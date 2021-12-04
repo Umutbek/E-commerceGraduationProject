@@ -33,7 +33,7 @@ function ProductItemFullWidthView({ product }: IProductItemFullWidthViewProps) {
                         <span>{ product.rating }</span>
                     </div>
 
-                    <Link href="/">
+                    <Link href="/stores">
                         <a className={clsx(classes.infoStore, 'line-clamp-2')}>
                             { product.supplier.username }
                         </a>

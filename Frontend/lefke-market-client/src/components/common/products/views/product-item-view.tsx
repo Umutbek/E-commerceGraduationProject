@@ -39,7 +39,7 @@ function ProductItemView({product}: IProductItemViewProps){
                     <Rating disabled rate={product.rating}/>
                 </div>
 
-                <Link href="/">
+                <Link href="/stores">
                     <a className={`${classes.store} line-clamp-2`}>
                         { product.supplier.username }
                     </a>

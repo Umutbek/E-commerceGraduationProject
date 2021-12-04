@@ -29,23 +29,30 @@ const useStyles = makeStyles({
 
 export default function Home({products = []}: any) {
 
+    console.log("UNI " + products)
     const classes = useStyles()
     const api = useContext(ApiContext)
 
-    const [popularProducts, setPopularProducts] = useState([])
-    const [isPopularProductsLoading, setIsPopularProductsLoading] = useState(false)
 
-    const fetchPopularProducts = useCallback(async () => {
-        setIsPopularProductsLoading(true)
+    const [storeProducts, setStoreProducts] = useState([])
+    const [isStoreProductsLoading, setIsStoreProductsLoading] = useState(false)
 
-        const { success, data } = await api.getPopularProducts()
+    const fetchStoreProducts = useCallback(async () => {
+        setIsStoreProductsLoading(true)
+
+        const { success, data } = await api.getStoreProducts()
+
 
         if (success){
-            setPopularProducts(data.results)
+            setStoreProducts(data.results)
         }
 
-        setIsPopularProductsLoading(false)
+        setIsStoreProductsLoading(false)
     }, [])
+
+  console.log("Store loading " + isStoreProductsLoading)
+  console.log("Api " + api)
+
 
   return (
     <>
@@ -57,9 +64,10 @@ export default function Home({products = []}: any) {
                     </Grid>
                     <Grid item xs={12}>
                         <div>
-                            <ProductsList title={"Popular products"}>
+
+                            <ProductsList title={"List of products"}>
                                 {
-                                    isPopularProductsLoading ? <FullContentSpinner/> :
+                                    isStoreProductsLoading ? <FullContentSpinner/> :
                                         products.map((product: IProduct) => (
                                             <ProductItem key={product.id} product={product} api={api} isMain listing={LISTING.COLUMN}/>
                                         ))
@@ -81,7 +89,7 @@ export async function getServerSideProps(params: any) {
 
     // Fetch data from external API
     try {
-        const response = await fetch(`${_baseApi}/item/item/?ordering=view`)
+        const response = await fetch(`${_baseApi}/item/item/?supplier=2&ordering=-views`)
 
         const data = await response.json()
 

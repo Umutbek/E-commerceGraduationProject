@@ -15,7 +15,6 @@ interface IMainProductItemViewProps {
 function MainProductItemView({product}: IMainProductItemViewProps){
 
     const classes = useStyles()
-    console.log("Product " + product.supplier.username)
 
     return (
         <li className={classes.item}>
@@ -36,7 +35,7 @@ function MainProductItemView({product}: IMainProductItemViewProps){
                 <div className={classes.rating}>
                     <Rating disabled rate={product.rating}/>
                 </div>
-                <Link href="/">
+                <Link href="/stores">
                     <a className={clsx(classes.store, 'line-clamp-2')}>
                         { product.supplier.username }
                     </a>

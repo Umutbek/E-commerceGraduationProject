@@ -17,7 +17,7 @@ function ProductItem({product, isMain = false, api, listing}: IProductItemProps)
 
     const dispatch = useDispatch()
 
-
+    console.log("Product " + product)
 
     if (listing === LISTING.ROW){
         return <ProductItemFullWidthView

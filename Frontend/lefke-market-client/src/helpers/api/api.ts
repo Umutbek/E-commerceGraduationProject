@@ -23,8 +23,6 @@ export default class Api {
 
             url = `${_baseApi}/item/item/?category_slug=${category}&subcategory_slug=${subCategory}&subsubcategory_slug=${subSubCategory}`
 
-            console.log("Category sukala" + category)
-
             ordering && (url += `&ordering=${ordering}`)
 
             min_cost && (url += `&min_cost=${min_cost}`)
@@ -114,9 +112,9 @@ export default class Api {
         }
     }
 
-    getPopularProducts = async () => {
+    getStoreProducts = async () => {
         try {
-            const response = await fetch(`${_baseApi}/item/item/?ordering=views`)
+            const response = await fetch(`${_baseApi}/item/item/?supplier=2`)
 
             const data = await response.json()
 
@@ -133,14 +131,15 @@ export default class Api {
 
 //    Categories
 
-    getCategories = async (store: string) => {
+    getCategories = async (store: number) => {
         try {
 
-            const response = await fetch(`${_baseApi}/item/category/`)
+            const response = await fetch(`${_baseApi}/item/category/?store=${store}`)
 
             const data = await response.json()
 
             return { success: true, data }
+
         } catch (e){
             return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
         }
@@ -170,17 +169,64 @@ export default class Api {
         }
     }
 
-    getStoreInfo = async (slugOrId: number | string) => {
+    getStoreCategory = async (store: string) => {
         try {
-            let url = ''
 
-            if (Number.isInteger(+slugOrId)){
-                url = `${_baseApi}/user/store/${slugOrId}/`
-            } else {
-                url = `${_baseApi}/user/store/${slugOrId}`
+            const response = await fetch(`${_baseApi}/user/storecategory/`)
+
+            const data = await response.json()
+
+            return { success: true, data }
+        } catch (e){
+            return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
+        }
+    }
+
+//Store
+
+    getStoreInfo = async (slugOrId: string) => {
+
+
+        try {
+
+            const response = await fetch(`${_baseApi}/user/store/${slugOrId}/`)
+
+            console.log("Response ", response)
+
+            const data = await response.json()
+
+            console.log("Data ", data)
+
+            if (response.ok){
+                return { success: true, data }
+            }
+            return { success: false, data }
+        } catch (e) {
+            return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
+        }
+    }
+
+    getStores = async (categorySlug: string) => {
+        try {
+
+            const response = await fetch(`${_baseApi}/user/store/?storecategory=${categorySlug}`)
+            const data = await response.json()
+
+            if (response.ok){
+                return { success: true, data }
             }
 
-            const response = await fetch(url)
+            return { success: false, data }
+        } catch (e){
+            return { success: true, data: ERROR.SOMETHING_WENT_WRONG }
+        }
+    }
+
+    getStoreCategories = async (slugOrdId: number | string) => {
+        try {
+            let params = `?store=${slugOrdId}`
+
+            const response = await fetch(`${_baseApi}/item/category/${params}`)
 
             const data = await response.json()
 
@@ -193,4 +239,5 @@ export default class Api {
             return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
         }
     }
+
 }

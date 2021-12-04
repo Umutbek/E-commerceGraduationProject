@@ -26,7 +26,8 @@ export interface ICategory {
     slug: string,
     icon: string,
     subCategories?: ISubCategory[],
-    isSubCategoriesInitialized?: boolean
+    isSubCategoriesInitialized?: boolean,
+    supplier = number
 }
 
 export interface ICatalog {

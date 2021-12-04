@@ -32,7 +32,7 @@ const DesktopHeader = dynamic(() => import('../src/components/common/header/desk
 const MobileHeader = dynamic(() => import('../src/components/common/header/mobile-header'), { ssr: false })
 const MobileBottomNavigation = dynamic(() => import('../src/components/common/mobile-bottom-navigation'), { ssr: false })
 
-declare module '@mui/styles/defaultTheme' {
+declare module '@mui/styles/defaultTomeme' {
   interface DefaultTheme extends Theme {}
 }
 
