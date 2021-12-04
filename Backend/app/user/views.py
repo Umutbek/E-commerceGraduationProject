@@ -13,16 +13,23 @@ from django.db.models import Sum, Count, F, Q
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters import FilterSet
+from django_filters import rest_framework as filters
+from user.filters import StoreFilter
 
 
 class StoreViewSet(viewsets.ModelViewSet):
     """Manage Store"""
     queryset = models.Store.objects.all()
     serializer_class = serializers.StoreSerializer
+    pagination_class = None
+    lookup_field = 'slug'
 
-    # filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    # filter_class = filter.StoreFilter
-    # search_fields = ('username', 'description', 'slogan')
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filter_class = StoreFilter
+    search_fields = ('username', 'description', 'slogan')
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -30,6 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     queryset = models.RegularAccount.objects.all()
     serializer_class = serializers.RegularAccountSerializer
+    pagination_class = None
 
 
 class LoginAPI(APIView):
@@ -55,3 +63,10 @@ class GetMeView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         """Retrieve and return authentication user"""
         return self.request.user
+
+
+class StoreCategoryView(generics.ListAPIView):
+    """Get list of store categories"""
+    serializer_class = serializers.StoreCategorySerializer
+    queryset = models.StoreCategory.objects.all()
+    pagination_class = None

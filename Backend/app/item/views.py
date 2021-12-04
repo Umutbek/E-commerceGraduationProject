@@ -17,6 +17,21 @@ from django_filters import FilterSet
 from django_filters import rest_framework as filters
 from item import filters
 from .service import get_client_ip
+from collections import OrderedDict
+from rest_framework import pagination
+from rest_framework.pagination import PageNumberPagination
+
+
+class FooPagination(pagination.PageNumberPagination):
+
+    def get_paginated_response(self, data, diction):
+        return Response(OrderedDict([
+            ('count', self.page.paginator.count),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('data', diction), # add the 'custom' field
+            ('results', data),
+        ]))
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -25,6 +40,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     serializer_class = serializers.CategorySerializer
     queryset = models.Category.objects.all()
+
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = filters.CategoryFilter
+
     pagination_class = None
 
 
@@ -64,8 +83,9 @@ class ItemViewSet(viewsets.ModelViewSet):
     filter_class = filters.ItemFilter
 
     ordering_fields = ('views', 'cost',)
-
     search_fields = ('name',)
+    pagination_class = FooPagination
+    lookup_field = 'slug'
 
     def get_queryset(self):
         """Retrieve the favourite stores for the authenticated user only"""
@@ -75,6 +95,38 @@ class ItemViewSet(viewsets.ModelViewSet):
         )
 
         return item
+
+
+    def get_paginated_response(self, data, diction):
+        """
+        Return a paginated style `Response` object for the given output data.
+        """
+        assert self.paginator is not None
+        return self.paginator.get_paginated_response(data, diction)
+
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        category = self.request.query_params.get('category_slug')
+        subcategory = self.request.query_params.get('subcategory_id')
+        subsubcategory = self.request.query_params.get('subsubcategory_id')
+        supplier = self.request.query_params.get('supplier')
+
+        print("Category", category)
+
+        mylist = functions.filtered_params(category, subcategory, subsubcategory)
+
+        print("List", mylist)
+
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data, mylist)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':

@@ -44,7 +44,7 @@ class StoreSerializer(UserSerializer):
     class Meta:
         model = models.Store
         fields = ('id', 'username','login', 'phone', 'email', 'slug', 'avatar', 'type', 'address', 'password',
-                  'slogan', 'description')
+                  'slogan', 'description', 'storecategory')
 
         read_only_field = ('id',)
         extra_kwargs = {'password':{'write_only':True},}
@@ -96,3 +96,11 @@ class PasswordChangeSerializer(serializers.Serializer):
     model = models.Store
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+
+class StoreCategorySerializer(serializers.ModelSerializer):
+    """Serializer for store category"""
+    class Meta:
+        model = models.StoreCategory
+        fields = ('id', 'nameEn', 'nameTr', 'icon', 'slug')
+        read_only_fields = ('id',)

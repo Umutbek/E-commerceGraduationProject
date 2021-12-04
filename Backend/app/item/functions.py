@@ -69,3 +69,45 @@ def create_order_in_firebase(saved_data, currentuser):
         i.save()
 
     saved_data.cart.save()
+
+
+def filtered_params(category, subcategory, subsubcategory):
+    diction = {}
+    mylist = {}
+
+    if category:
+        category = models.Category.objects.filter(slug=category).first()
+
+        if category:
+            diction = {
+                "nameEn": category.nameEn,
+                "nameTr": category.nameTr,
+
+            }
+            mylist['category'] = diction
+
+    if subcategory:
+        subcategory = models.SubCategory.objects.filter(slug=subcategory).first()
+
+        if subcategory:
+
+            diction = {
+                "nameEn": subcategory.nameEn,
+                "nameTr": subcategory.nameTr,
+                "category": subcategory.category.slug
+            }
+            mylist['subcategory'] = diction
+
+    if subsubcategory:
+        subsubcategory = models.SubSubCategory.objects.filter(slug=subsubcategory).first()
+
+        if subsubcategory:
+
+            diction = {
+                "nameEn": subsubcategory.nameEn,
+                "nameTr": subsubcategory.nameTr,
+                "subcategory": subsubcategory.subcategory.slug
+            }
+            mylist['subsubcategory'] = diction
+
+    return mylist

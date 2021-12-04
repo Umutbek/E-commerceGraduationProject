@@ -27,6 +27,15 @@ class ItemFilter(FilterSet):
                   'min_cost', 'max_cost', 'supplier')
 
 
+class CategoryFilter(FilterSet):
+    """Filter for an item"""
+    store = filters.CharFilter('supplier__slug')
+
+    class Meta:
+        models = models.Category
+        fields = ('store',)
+
+
 class SubCategoryFilter(FilterSet):
     """Filter for an item"""
     category = filters.CharFilter('category')

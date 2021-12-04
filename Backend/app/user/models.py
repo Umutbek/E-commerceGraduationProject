@@ -9,8 +9,22 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django_fsm import FSMIntegerField, transition
 from user import utils
-from app.utils import unique_slug_generator
+from app.utils import unique_store_slug_generator, unique_slug_generator
 from django.db.models.signals import pre_save
+
+
+class StoreCategory(models.Model):
+    """Model for store categories"""
+    nameEn = models.CharField(max_length=200)
+    nameTr = models.CharField(max_length=200)
+    icon = models.TextField(null=True, blank=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.nameEn
+
+    class Meta:
+        ordering = ('id',)
 
 
 class UserManager(BaseUserManager):
@@ -64,6 +78,7 @@ class Store(User):
     """Model for Store"""
     slogan = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    storecategory = models.ManyToManyField('StoreCategory')
 
     class Meta:
         verbose_name = _("Store")
@@ -81,8 +96,13 @@ class RegularAccount(User):
         verbose_name_plural = _("Regular users")
 
 
-def slug_store_generator(sender, instance, *args, **kwargs):
+def slug_generator(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
+def slug_store_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_store_slug_generator(instance)
+
 pre_save.connect(slug_store_generator, sender=User)
+pre_save.connect(slug_generator, sender=StoreCategory)
