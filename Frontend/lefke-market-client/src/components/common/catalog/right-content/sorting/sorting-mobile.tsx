@@ -58,7 +58,7 @@ function SortingMobile({ordering, onSelectOrder}: IMobileSortingProps) {
     const classes = useStyles()
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [listingText, setListingText] = useState('По популярности')
+    const [listingText, setListingText] = useState('By popularity')
 
     const handleClose = useCallback(() => {
         setIsModalOpen(false)

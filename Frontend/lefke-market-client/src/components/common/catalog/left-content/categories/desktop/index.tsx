@@ -47,6 +47,7 @@ function CategoriesDesktop({ categories }: ICategoriesDesktopProps) {
 
     const classes = useStyles()
 
+    console.log("Categories", categories)
     return (
         <div className={classes.category}>
             <span className={classes.title}>Categories</span>

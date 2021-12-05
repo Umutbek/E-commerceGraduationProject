@@ -30,7 +30,7 @@ export const fetchCategories = (storeName: string) => async (dispatch: AppDispat
     try {
 
         const params = storeName === 'global' ?
-            `${_baseApi}/item/category/?store=2` :
+            `${_baseApi}/item/category/?store=kiler` :
             `${_baseApi}/item/category/`
 
         const response = await fetch(`${params}`)
