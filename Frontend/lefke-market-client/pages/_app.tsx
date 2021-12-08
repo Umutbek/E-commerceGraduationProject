@@ -22,6 +22,8 @@ import NextNprogress from 'nextjs-progressbar'
 import ApiContext from "../src/helpers/api/api-context"
 import Api from "../src/helpers/api"
 import store from '../src/redux/store'
+import AuthModal from "../src/components/common/auth/auth-modal"
+
 import {SCREEN_TYPE} from "../src/enums"
 import ScrollToTop from "../src/components/common/scroll-to-top"
 import dynamic from "next/dynamic"
@@ -107,6 +109,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <MobileBottomNavigation/>
               </> : <>
                 <DesktopCategoryDrawer storeName="global"/>
+                <AuthModal/>
               </> }
               <ScrollToTop/>
             </ThemeProvider>

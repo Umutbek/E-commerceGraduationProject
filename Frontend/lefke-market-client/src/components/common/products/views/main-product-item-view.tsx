@@ -12,7 +12,11 @@ interface IMainProductItemViewProps {
     product: IProduct,
 }
 
+
+
 function MainProductItemView({product}: IMainProductItemViewProps){
+
+    console.log("Product", product)
 
     const classes = useStyles()
 

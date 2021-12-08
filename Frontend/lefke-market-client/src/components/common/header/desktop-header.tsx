@@ -7,24 +7,41 @@ import Link from 'next/link'
 import {useDispatch, useSelector} from "react-redux"
 import {useCallback} from "react"
 import {openCategoryDrawer} from "../../../redux/states/catalog/actions"
+import {getIsAuth, getUser} from "../../../redux/states/auth/getters"
+
+import {openAuthModal, openCartModal} from "../../../redux/states/settings/actions"
 import {useRouter} from "next/router"
 import {BREAKPOINTS, COLOR} from "../../../enums"
 import {StoreIcon} from "../icons"
+import ProfileModal from "../profile/profile-modal"
 
 export default function DesktopHeader(){
-
-    console.log('DESKTOP HEADER')
 
     const classes = useStyles()
     const router = useRouter()
 
+    const isAuth = useSelector(getIsAuth)
+    const user = useSelector(getUser)
+
     const dispatch = useDispatch()
 
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(true)
 
     const onOpenCategory = useCallback(() => {
         dispatch(openCategoryDrawer())
     }, [dispatch])
 
+    const handleLoginClick = (e: MouseEvent) => {
+        e.preventDefault()
+
+        if (isAuth){
+            setIsProfileModalOpen(true)
+        } else {
+            dispatch(openAuthModal())
+        }
+    }
+
+    useEffect(() => { setIsProfileModalOpen(false) }, [router.pathname, isAuth])
 
     return (
         <>
@@ -90,12 +107,13 @@ export default function DesktopHeader(){
                                     </Link>
                                 </li>
                                 <li className={classes.navbarRightItem}>
-                                    <a>
+                                    <a onClick={handleLoginClick} className="cursor-pointer">
                                         <Image src={'/icons/lefke_user.png'} width={24} height={24} alt="uygo user"/>
                                         <span className={classes.navbarRightItemText}>
-                                            Login
+                                            { user ? user[0].login : 'Login' }
                                         </span>
                                     </a>
+                                    <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)}/>
                                 </li>
                             </ul>
                         </div>

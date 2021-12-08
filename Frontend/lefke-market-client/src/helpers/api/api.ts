@@ -11,6 +11,65 @@ interface IGetProducts {
 
 export default class Api {
 
+    // Authorization
+
+    register = async (phone: string, fullName: string, address: string, password:string) => {
+        try {
+            const response = await fetch(`${_baseApi}/user/client/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ login: `+${phone}`, username: fullName, address: address, password: password, type: 1 })
+            })
+
+            const data = await response.json()
+
+            console.log("Reg response", response)
+            console.log("Reg Data", data)
+
+            if (response.ok){
+                return { success: true, data }
+            }
+
+            let message = ERROR.SOMETHING_WENT_WRONG
+
+            if (Array.isArray(data.detail) && data.detail.length){
+                message = data.detail[0]
+            } else if (data.detail) {
+                message = data.detail
+            } else if (Array.isArray(data.login) && data.login.length){
+                message = data.login[0]
+            }
+
+            return { success: false, data: { message } }
+        } catch (e) {
+            return { success: false, data: { message: ERROR.SOMETHING_WENT_WRONG } }
+        }
+    }
+
+    verifyCode = async (phone: string, password: string) => {
+
+        try {
+            const response = await fetch(`${_baseApi}/user/login/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ login: `+${phone}`, password: password })
+            })
+
+            const data = await response.json()
+
+            console.log("Response", response)
+            console.log("Data", data)
+
+            if (response.ok){
+                return { success: true, data }
+            }
+
+            return { success: false, data: { detail: data.detail, message: null } }
+        } catch (e) {
+            return { success: false, data: { detail: null, message: ERROR.SOMETHING_WENT_WRONG } }
+        }
+    }
+
 //    Products
 
     getProducts = async (store: string, category: string, subCategory: string, subSubCategory: string, ordering: string, costInterval: any) => {
