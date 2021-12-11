@@ -92,6 +92,9 @@ class ItemViewSet(viewsets.ModelViewSet):
 
         item = self.queryset.all().order_by('?').annotate(
             views=Count('item_views')
+        ).annotate(
+            isfavourite=Count("fav_items",
+                                     filter=Q(fav_items__user=self.request.user.id))
         )
 
         return item
@@ -200,3 +203,61 @@ class ClientOrderViewSet(viewsets.ModelViewSet):
         saved_data = serializer.save()
         functions.create_order_in_firebase(saved_data, self.request.user.username)
         return Response(serializer.data)
+
+
+class UserFavouriteView(APIView):
+    """API view for kurjun list"""
+    serializer_class = serializers.UserFavouriteItemsSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        """Create user favourite item"""
+        serializer = serializers.UserFavouriteItemsSerializer(data=request.data)
+        if serializer.is_valid():
+            saved_data = serializer.save()
+            itemm = models.Item.objects.get(id=saved_data.item.id)
+            itemserializer = serializers.GetUserFavItemSerializer(itemm)
+            return Response(itemserializer.data)
+        else:
+            return Response(serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserFavouriteView(generics.ListAPIView):
+    """Get user favourite items"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = serializers.UserFavouriteItemsDetailSerializer
+    queryset = models.UserFavouriteItems.objects.all()
+
+    def get_queryset(self):
+        """Return object for the current authenticated user only"""
+        print("User", self.request.user)
+        return self.queryset.filter(user=self.request.user)
+
+
+class GetUserFavouriteDetailView(APIView):
+    """APIView for userfavourite detail list"""
+    serializer_class = serializers.UserFavouriteItemsDetailSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'item'
+
+    def get(self, request, item):
+        """Return list of fav items detail"""
+        favor = models.UserFavouriteItems.objects.filter(item=item) & models.UserFavouriteItems.objects.filter(user=request.user)
+        if favor:
+            for i in favor:
+                serializer = serializers.UserFavouriteItemsDetailSerializer(i)
+                return Response(serializer.data)
+        return Response({'detail': 'No favourite item with this id'}, status=status.HTTP_404_NOT_FOUND)
+
+
+    def delete(self, request, item):
+        """Deleting favourite item"""
+        favor = models.UserFavouriteItems.objects.filter(item=item) & models.UserFavouriteItems.objects.filter(user=request.user)
+        myitem = models.Item.objects.get(id=item)
+        itemserializer = serializers.ItemSerializer(myitem)
+        favor.delete()
+        return Response(itemserializer.data)

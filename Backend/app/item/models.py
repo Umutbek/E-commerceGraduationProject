@@ -10,7 +10,7 @@ from user.models import User
 
 
 class Category(models.Model):
-    """Subcategory for an Item"""
+    """Category for an Item"""
     nameEn = models.CharField(max_length=200)
     nameTr = models.CharField(max_length=200)
     icon = models.CharField(max_length=1000, null=True, blank=True)
@@ -148,6 +148,12 @@ class ModelOrder(models.Model):
             firestore.db.collection(u'stores').document(str(self.storeId.id)).collection(u'orders').document(str(self.id)).update({"status": 5, "declinereason": self.declinereason})
 
         super(ModelOrder, self).save(*args, **kwargs)
+
+
+class UserFavouriteItems(models.Model):
+    """Model for user favourite items"""
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True, related_name='fav_items')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 def slug_generator(sender, instance, *args, **kwargs):

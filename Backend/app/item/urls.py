@@ -13,5 +13,8 @@ router.register(r'cart', views.CartViewSet)
 router.register(r'clientorder', views.ClientOrderViewSet)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('userfavourite/', views.UserFavouriteView.as_view()),
+    path('getuserfavourite/', views.GetUserFavouriteView.as_view()),
+    path('getuserfavourite/<int:item>', views.GetUserFavouriteDetailView.as_view()),
 ]

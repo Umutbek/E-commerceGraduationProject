@@ -42,6 +42,9 @@ class ItemSerializer(serializers.ModelSerializer):
                   'publishDate')
         read_only_fields = ('id',)
 
+    def get_views(self, obj):
+        return obj.item_views.count()
+
 
 class GetItemSerializer(serializers.ModelSerializer):
     """Serializer for Item"""
@@ -112,3 +115,38 @@ class GetClientOrderSerializer(serializers.ModelSerializer):
             'comment', 'date', 'cart'
         )
         read_only_fields = ('id',)
+
+
+class UserFavouriteItemsSerializer(serializers.ModelSerializer):
+    """User favourite items """
+    class Meta:
+        model = models.UserFavouriteItems
+        fields = ('id', 'item', 'user')
+        read_only_fields = ('id',)
+
+
+class UserFavouriteItemsDetailSerializer(serializers.ModelSerializer):
+    """User favourite items in detail, open fk"""
+    item = ItemSerializer()
+    user = RegularAccountSerializer()
+
+    class Meta:
+        model = models.UserFavouriteItems
+        fields = ('id', 'item', 'user')
+        read_only_fields = ('id',)
+
+
+class GetUserFavItemSerializer(serializers.ModelSerializer):
+    """Serializer for Item"""
+    isfavourite = serializers.BooleanField(default=True)
+    views = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Item
+        fields = (
+            'id', 'name', 'description', 'category', 'subcategory', 'isfavourite',
+            'subsubcategory', 'cost', 'supplier', 'views', 'image',
+            )
+
+    def get_views(self, obj):
+        return obj.item_views.count()
