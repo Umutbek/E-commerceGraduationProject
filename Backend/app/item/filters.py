@@ -10,13 +10,10 @@ class ItemFilter(FilterSet):
     category_id = filters.CharFilter('category')
     subcategory_id = filters.CharFilter('subcategory')
     subsubcategory_id = filters.CharFilter('subsubcategory')
-
     category_slug = filters.CharFilter('category__slug')
     subcategory_slug = filters.CharFilter('subcategory__slug')
     subsubcategory_slug = filters.CharFilter('subsubcategory__slug')
-
     supplier = filters.CharFilter('supplier__slug')
-
     min_cost= filters.CharFilter(field_name="cost",lookup_expr='gte')
     max_cost= filters.CharFilter(field_name="cost",lookup_expr='lte')
 

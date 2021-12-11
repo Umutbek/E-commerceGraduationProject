@@ -66,7 +66,6 @@ class SubSubcategoryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     serializer_class = serializers.SubSubcategorySerializer
     queryset = models.SubSubcategory.objects.all()
-
     filter_backends = (DjangoFilterBackend,)
     filter_class = filters.SubSubCategoryFilter
 
@@ -115,12 +114,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         subsubcategory = self.request.query_params.get('subsubcategory_id')
         supplier = self.request.query_params.get('supplier')
 
-        print("Category", category)
-
         mylist = functions.filtered_params(category, subcategory, subsubcategory)
-
-        print("List", mylist)
-
         page = self.paginate_queryset(queryset)
 
         if page is not None:
@@ -206,7 +200,7 @@ class ClientOrderViewSet(viewsets.ModelViewSet):
 
 
 class UserFavouriteView(APIView):
-    """API view for kurjun list"""
+    """API view for user favourite items"""
     serializer_class = serializers.UserFavouriteItemsSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
