@@ -15,7 +15,7 @@ interface IProductItemViewProps {
     product: IProduct,
 }
 
-function ProductItemView({product}: IProductItemViewProps){
+function ProductItemView({handleFavoriteBtnClick, product, isInFavorites}: IProductItemViewProps){
 
     const classes = useStyles()
 
@@ -23,8 +23,8 @@ function ProductItemView({product}: IProductItemViewProps){
         <li className={classes.item}>
             <div className={classes.card}>
 
-                <button className={`reset-button ${classes.like_button}`}>
-                    <Image src='/icons/lefke_like2.png' width={32} height={32} alt="Lefke like icon"/>
+                <button className={`reset-button ${classes.like_button}`} onClick={handleFavoriteBtnClick}>
+                    <Image src={isInFavorites ? '/icons/lefke_liked.png' : `/icons/lefke_like2.png`} width={32} height={32} alt="lefke like icon"/>
                 </button>
 
                 <Link href={`/product-details/${product.slug || product.id}`}>

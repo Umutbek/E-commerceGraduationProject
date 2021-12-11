@@ -14,6 +14,7 @@ import {useRouter} from "next/router"
 import {BREAKPOINTS, COLOR} from "../../../enums"
 import {StoreIcon} from "../icons"
 import ProfileModal from "../profile/profile-modal"
+import {fetchFavoritesFromServer} from "../../../redux/states/favorite/actions"
 
 export default function DesktopHeader(){
 
@@ -42,6 +43,7 @@ export default function DesktopHeader(){
     }
 
     useEffect(() => { setIsProfileModalOpen(false) }, [router.pathname, isAuth])
+    useEffect(() => { dispatch(fetchFavoritesFromServer()) }, [isAuth])
 
     return (
         <>

@@ -20,7 +20,7 @@ import Modal from "@mui/material/Modal"
 const TAB = {
     LOGIN: { ID: 1, HEIGHT: '400px', TITLE: 'Login' },
     REGISTRATION: { ID: 2, HEIGHT: '650px', TITLE: 'Registration' },
-    SMS_CHECK: { ID: 3, HEIGHT: '300px', TITLE: 'Код подтверждения' }
+    SMS_CHECK: { ID: 3, HEIGHT: '300px', TITLE: 'Code confirmation' }
 }
 
 interface IAuthContentProps {

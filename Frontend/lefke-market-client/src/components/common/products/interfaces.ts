@@ -11,4 +11,5 @@ export interface IProduct {
     views: string,
     image: string,
     slug: string,
+    isfavourite: boolean
 }

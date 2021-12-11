@@ -299,4 +299,68 @@ export default class Api {
         }
     }
 
+
+    getUserFavorites = async (userId: number | string) => {
+        try {
+            const response = await fetch(`${_baseApi}/item/getuserfavourite/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${getToken()}`
+                }
+            })
+
+            const data = await response.json()
+
+            if (response.ok){
+                return { success: true, data }
+            }
+
+            return { success: false, data }
+        } catch (e) {
+            return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
+        }
+    }
+
+    addToFavorite = async (productId: number | string, userId: number | string) => {
+        try {
+            const response = await fetch(`${_baseApi}/item/userfavourite/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${getToken()}`
+                },
+                body: JSON.stringify({item: productId, user: userId})
+            })
+
+            const data = await response.json()
+
+            if (response.ok){
+                return { success: true, data }
+            }
+
+            return { success: false, data }
+        } catch (e) {
+            return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
+        }
+    }
+
+    deleteFromFavorites = async (productId: number | string) => {
+        try {
+            const response = await fetch(`${_baseApi}/item/getuserfavourite/${productId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Token ${getToken()}` }
+            })
+
+            // const data = await response.json()
+
+            if (response.ok){
+                return { success: true, data: {} }
+            }
+
+            return { success: false, data: {} }
+        } catch (e) {
+            return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
+        }
+    }
 }

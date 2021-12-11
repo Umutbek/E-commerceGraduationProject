@@ -8,10 +8,13 @@ import makeStyles from "@mui/styles/makeStyles"
 import {IProduct} from "../interfaces"
 
 interface IProductItemFullWidthViewProps {
+
+    handleFavoriteBtnClick: (e: MouseEvent) => void,
+    isInFavorites: boolean,
     product: IProduct,
 }
 
-function ProductItemFullWidthView({ product }: IProductItemFullWidthViewProps) {
+function ProductItemFullWidthView({ product, handleFavoriteBtnClick, isInFavorites }: IProductItemFullWidthViewProps) {
 
     const classes = useStyles()
 
@@ -57,6 +60,10 @@ function ProductItemFullWidthView({ product }: IProductItemFullWidthViewProps) {
                         <Button variant="contained" classes={{ root: classes.info_to_cart_btn }}>
                             busket
                         </Button>
+
+                        <button className={clsx('reset-button', 'cursor-pointer', classes.info_favorite_btn)} onClick={handleFavoriteBtnClick}>
+                            <Image src={isInFavorites ? '/icons/lefke_liked.png' : `/icons/lefke_like2.png`} width={32} height={32} alt="lefke like icon"/>
+                        </button>
                     </div>
                 </div>
             </div>

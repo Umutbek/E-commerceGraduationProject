@@ -9,12 +9,14 @@ import {IProduct} from "../interfaces"
 import {Hidden} from "@mui/material"
 
 interface IMainProductItemViewProps {
+    handleFavoriteBtnClick: any,
+    isInFavorites: boolean,
     product: IProduct,
 }
 
 
 
-function MainProductItemView({product}: IMainProductItemViewProps){
+function MainProductItemView({handleFavoriteBtnClick, product, isInFavorites}: IMainProductItemViewProps){
 
     console.log("Product", product)
 
@@ -24,8 +26,8 @@ function MainProductItemView({product}: IMainProductItemViewProps){
         <li className={classes.item}>
             <div className={classes.card}>
 
-                <button className={`reset-button ${classes.like_button}`}>
-                    <Image src='/icons/lefke_like2.png' width={32} height={32} alt="lefke like icon"/>
+                <button className={`reset-button ${classes.like_button}`} onClick={handleFavoriteBtnClick}>
+                    <Image src={isInFavorites ? '/icons/lefke_liked.png' : `/icons/lefke_like2.png`} width={32} height={32} alt="lefke like icon"/>
                 </button>
 
                 <Link href={product.slug ? `/product-details/${product.slug}` : `/product-details/${product.id}`}>
