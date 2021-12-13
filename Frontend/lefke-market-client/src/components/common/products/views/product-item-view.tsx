@@ -161,7 +161,7 @@ const useStyles = makeStyles({
 
     store: {
         width: '100%',
-        height: 15,
+        height: 25,
         marginTop: 16,
         fontSize: '14px',
         fontWeight: 400,

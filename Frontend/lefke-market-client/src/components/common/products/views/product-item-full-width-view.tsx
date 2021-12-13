@@ -168,7 +168,7 @@ const useStyles = makeStyles({
     },
 
     infoStore: {
-        fontSize: '20px',
+        fontSize: '25px',
         lineHeight: '24px',
         marginTop: 8,
         color: '#0000FF',

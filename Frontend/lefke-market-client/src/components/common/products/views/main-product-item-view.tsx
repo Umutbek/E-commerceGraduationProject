@@ -138,7 +138,7 @@ const useStyles = makeStyles({
         }
     },
     name: {
-        height: 20,
+        height: 30,
         marginTop: 16,
         fontSize: '14px',
         fontWeight: 400,
@@ -154,7 +154,7 @@ const useStyles = makeStyles({
     },
 
     store: {
-        height: 15,
+        height: 25,
         marginTop: 16,
         fontSize: '14px',
         fontWeight: 400,

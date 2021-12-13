@@ -50,9 +50,6 @@ export default function Home({products = []}: any) {
         setIsStoreProductsLoading(false)
     }, [])
 
-  console.log("Store loading " + isStoreProductsLoading)
-  console.log("Api " + api)
-
 
   return (
     <>
@@ -65,7 +62,7 @@ export default function Home({products = []}: any) {
                     <Grid item xs={12}>
                         <div>
 
-                            <ProductsList title={"List of products"}>
+                            <ProductsList title={"Popular products:"}>
                                 {
                                     isStoreProductsLoading ? <FullContentSpinner/> :
                                         products.map((product: IProduct) => (
@@ -89,7 +86,7 @@ export async function getServerSideProps(params: any) {
 
     // Fetch data from external API
     try {
-        const response = await fetch(`${_baseApi}/item/item/?supplier=2&ordering=-views`)
+        const response = await fetch(`${_baseApi}/item/item/?ordering=-views`)
 
         const data = await response.json()
 

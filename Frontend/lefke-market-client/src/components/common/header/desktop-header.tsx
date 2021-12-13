@@ -110,7 +110,7 @@ export default function DesktopHeader(){
                                 </li>
                                 <li className={classes.navbarRightItem}>
                                     <a onClick={handleLoginClick} className="cursor-pointer">
-                                        <Image src={'/icons/lefke_user.png'} width={24} height={24} alt="uygo user"/>
+                                        <Image src={'/icons/lefke_user.png'} width={24} height={24} alt="lefke user"/>
                                         <span className={classes.navbarRightItemText}>
                                             { user ? user[0].login : 'Login' }
                                         </span>
@@ -177,7 +177,7 @@ const useStyles = makeStyles({
         background: '#f2f2f2',
         padding: '10px 16px',
         fontSize: 16,
-        backgroundImage: `url(icons/uygo_search_green.png)`,
+//         backgroundImage: `url(icons/lefke_search_green.png)`,
         backgroundSize: '18px 18px',
         backgroundPosition: 'top 13px right 16px',
         backgroundRepeat: 'no-repeat',

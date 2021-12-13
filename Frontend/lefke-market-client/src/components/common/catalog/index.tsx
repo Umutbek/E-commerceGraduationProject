@@ -59,8 +59,6 @@ export default function Catalog({ context, store, category = '', subCategory = '
                         breadcrumbs.push({ name: store, link: `/catalog/${store}` })
                 }
 
-                console.log("Data " + data)
-
                 if (store === 'global'){
                     category && breadcrumbs.push({ name: data.data.category?.nameEn, link: `/catalog/${store}/${category}` })
                     subCategory && breadcrumbs.push({ name: data.data.subcategory?.nameEn, link: `/catalog/${store}/${category}/${subCategory}` })

@@ -23,9 +23,6 @@ export default class Api {
 
             const data = await response.json()
 
-            console.log("Reg response", response)
-            console.log("Reg Data", data)
-
             if (response.ok){
                 return { success: true, data }
             }
@@ -80,7 +77,7 @@ export default class Api {
 
             let url
 
-            url = `${_baseApi}/item/item/?category_slug=${category}&subcategory_slug=${subCategory}&subsubcategory_slug=${subSubCategory}`
+            url = `${_baseApi}/item/item/?category_slug=${category}&subcategory_slug=${subCategory}&subsubcategory_slug=${subSubCategory}&supplier=${store}`
 
             ordering && (url += `&ordering=${ordering}`)
 
@@ -173,15 +170,19 @@ export default class Api {
 
     getStoreProducts = async () => {
         try {
-            const response = await fetch(`${_baseApi}/item/item/?supplier=2`)
+            console.log("Suka ya rabotayu")
+            const response = await fetch(`${_baseApi}/item/item`)
 
             const data = await response.json()
 
             if (response.ok){
+                console.log("ok")
                 return { success: true, data }
             }
 
+            console.log("Not ok")
             return { success: false, data }
+
         } catch (e) {
             return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
         }
