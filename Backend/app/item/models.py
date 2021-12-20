@@ -57,6 +57,7 @@ class IpModel(models.Model):
 class Item(models.Model):
     """Item model"""
     name = models.CharField(max_length=200)
+    uniqueid = models.CharField(max_length=200, unique=True, null=True)
     description = models.TextField(null=True, blank=True)
     cost = models.FloatField()
     category = models.ForeignKey(Category, related_name="category", on_delete=models.CASCADE)
@@ -69,6 +70,7 @@ class Item(models.Model):
     publishDate = models.DateTimeField(auto_now_add=True)
     image = models.TextField(null=True, blank=True)
     item_views = models.ManyToManyField(IpModel, related_name="post_views", blank=True)
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

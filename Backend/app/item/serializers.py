@@ -39,7 +39,7 @@ class ItemSerializer(serializers.ModelSerializer):
         model = models.Item
         fields = ('id', 'name', 'description', 'cost', 'category', 'image', 'views',
                   'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount',
-                  'publishDate')
+                  'publishDate', 'quantity')
         read_only_fields = ('id',)
 
     def get_views(self, obj):
@@ -53,7 +53,8 @@ class GetItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Item
         fields = ('id', 'name', 'description', 'cost', 'category', 'image', 'slug', 'views',
-                  'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount', 'publishDate')
+                  'subcategory', 'subsubcategory', 'supplier', 'issale', 'discount',
+                  'publishDate', 'quantity')
         read_only_fields = ('id',)
         depth=1
 
