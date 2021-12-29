@@ -17,4 +17,6 @@ urlpatterns = [
     path('userfavourite/', views.UserFavouriteView.as_view()),
     path('getuserfavourite/', views.GetUserFavouriteView.as_view()),
     path('getuserfavourite/<int:item>', views.GetUserFavouriteDetailView.as_view()),
+    path('removecartitem/', views.RemoveItem.as_view()),
+    path('removecartitemall/', views.RemoveItemAll.as_view()),
 ]

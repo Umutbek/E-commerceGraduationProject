@@ -151,3 +151,13 @@ class GetUserFavItemSerializer(serializers.ModelSerializer):
 
     def get_views(self, obj):
         return obj.item_views.count()
+
+
+class RemoveItemNewSerializer(serializers.Serializer):
+    """Remove item from cart"""
+    item = serializers.IntegerField()
+    cart = serializers.IntegerField()
+
+    def save(self):
+        item = self.validated_data['item']
+        cart = self.validated_data['cart']

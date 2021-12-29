@@ -199,6 +199,57 @@ class ClientOrderViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class RemoveItem(APIView):
+    serializer_class = serializers.RemoveItemNewSerializer
+
+    def post(self, request):
+        serializer = serializers.RemoveItemNewSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        cart = serializer.validated_data['cart']
+        item = serializer.validated_data['item']
+        usercart = models.ModelCart.objects.filter(id=cart).first()
+        if usercart:
+            for i in usercart.listitem.all():
+
+                if item == i.item.id and i.quantity>1:
+                    i.quantity = i.quantity - 1
+                    i.save()
+                elif item == i.item.id and i.quantity == 1:
+                    if usercart.listitem.count() == 1:
+                        usercart.delete()
+                        break
+                    i.delete()
+            return Response({"Success": True})
+        else:
+            return Response({"Success": False})
+
+
+class RemoveItemAll(APIView):
+    serializer_class = serializers.RemoveItemNewSerializer
+
+    def post(self, request):
+        serializer = serializers.RemoveItemNewSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        cart = serializer.validated_data['cart']
+        item = serializer.validated_data['item']
+        usercart = models.ModelCart.objects.filter(id=cart).first()
+        if usercart:
+            for i in usercart.listitem.all():
+
+                if item == i.item.id and usercart.listitem.count() == 1:
+                    usercart.delete()
+                    i.delete()
+                    break
+
+                elif item == i.item.id and usercart.listitem.count() > 1:
+                    i.delete()
+                    break
+
+            return Response({"success": True})
+        else:
+            return Response({"success": False})
+
+
 class UserFavouriteView(APIView):
     """API view for user favourite items"""
     serializer_class = serializers.UserFavouriteItemsSerializer
