@@ -2,13 +2,15 @@ import {CLOSE_AUTH_MODAL, CLOSE_CART_MODAL, OPEN_AUTH_MODAL, OPEN_CART_MODAL, SE
 import {SCREEN_TYPE} from "../../../enums"
 import {ISettings, ISettingsAction} from "./interfaces"
 
-console.log('SETTINGS REDUCER')
 
 const getScreenType = () =>  {
+
+
     if (typeof window !== 'undefined'){
-        console.log('window width: ', window.screen.width)
+
         const windowWidth = window.screen.width
 
+        console.log("Width", windowWidth)
 
         if (windowWidth < 600){
             return SCREEN_TYPE.MOBILE

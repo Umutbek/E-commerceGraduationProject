@@ -21,6 +21,14 @@ export const LikeIcon = ({width = 16, height = 16, color = '#B8B8B8'}) => {
     </>
 }
 
+export const LikeIconFilled = ({width = 16, height = 16, color = '#B8B8B8'}) => {
+    return <>
+        <svg width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.0156 4.89796C16.622 3.26594 13.6662 4.02755 12.0705 5.8953C10.4747 4.02755 7.51897 3.25688 5.12535 4.89796C3.85601 5.76836 3.05814 7.23718 3.00374 8.78759C2.8768 12.3055 5.99576 15.1252 10.7558 19.4501L10.8465 19.5317C11.5355 20.1573 12.5963 20.1573 13.2854 19.5226L13.3852 19.4319C18.1452 15.1162 21.2551 12.2964 21.1372 8.77852C21.0828 7.23718 20.2849 5.76836 19.0156 4.89796Z" fill={color}/>
+        </svg>
+    </>
+}
+
 export const ArrowNextIcon = ({ width = 16, height = 16, color = '#0076CF' }) => {
     return <>
         <svg width={width} height={height} viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">

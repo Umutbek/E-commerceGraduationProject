@@ -6,19 +6,19 @@ import Button from "@mui/material/Button"
 import {BREAKPOINTS, COLOR} from "../../../../enums"
 import clsx from "clsx"
 import {IProduct} from "../interfaces"
-import {Hidden} from "@mui/material"
+import Hidden from "@mui/material/Hidden"
+import IconButton from "@mui/material/IconButton"
 
 interface IMainProductItemViewProps {
     handleFavoriteBtnClick: any,
     isInFavorites: boolean,
+    isInCart: boolean,
+    toggleAddToCart: any,
     product: IProduct,
 }
 
 
-
-function MainProductItemView({handleFavoriteBtnClick, product, isInFavorites}: IMainProductItemViewProps){
-
-    console.log("Product", product)
+function MainProductItemView({handleFavoriteBtnClick, product, isInFavorites, isInCart, toggleAddToCart}: IMainProductItemViewProps){
 
     const classes = useStyles()
 
@@ -26,9 +26,9 @@ function MainProductItemView({handleFavoriteBtnClick, product, isInFavorites}: I
         <li className={classes.item}>
             <div className={classes.card}>
 
-                <button className={`reset-button ${classes.like_button}`} onClick={handleFavoriteBtnClick}>
-                    <Image src={isInFavorites ? '/icons/lefke_liked.png' : `/icons/lefke_like2.png`} width={32} height={32} alt="lefke like icon"/>
-                </button>
+                <IconButton className={`reset-button ${classes.like_button}`} onClick={handleFavoriteBtnClick}>
+                      <Image src={isInFavorites ? '/icons/lefke_liked.png' : `/icons/lefke_like2.png`} width={32} height={32} alt="lefke like icon"/>
+                </IconButton>
 
                 <Link href={product.slug ? `/product-details/${product.slug}` : `/product-details/${product.id}`}>
                     <a className={classes.imageContainer}>
@@ -46,6 +46,7 @@ function MainProductItemView({handleFavoriteBtnClick, product, isInFavorites}: I
                         { product.supplier.username }
                     </a>
                 </Link>
+
                 <Link href={product.slug ? `/product-details/${product.slug}` : `/product-details/${product.id}`}>
                     <a className={clsx(classes.name, 'line-clamp-2')}>
                         { product.name }
@@ -58,11 +59,23 @@ function MainProductItemView({handleFavoriteBtnClick, product, isInFavorites}: I
                 <Button
                     variant="contained"
                     classes={{ root: classes.to_cart_button }}
+                    onClick={toggleAddToCart}
                 >
                     <Hidden only={["sm", "xs"]}>
-                        <span>Add to busket</span>
+                        { isInCart ? <span>Added</span> : <span>Add to busket</span> }
+                    </Hidden>
+                    <Hidden only={["md", "lg", "xl"]}>
+                        <span className={classes.buttonIcons}>
+                            {
+                                isInCart ? <span>Added</span> : <>
+                                    <Image src={'/icons/plus.png'} width={24} height={24} alt="lefke plus icon"/>
+                                    <Image src={'/icons/lefke_cart3.png'} width={24} height={24} alt="lefke cart icon"/>
+                                </>
+                            }
+                        </span>
                     </Hidden>
                 </Button>
+
             </div>
         </li>
     )
@@ -93,6 +106,10 @@ const useStyles = makeStyles({
         background: '#fff',
         borderRadius: '8px',
         padding: '27px 16px 24px',
+
+        '&:hover': {
+            boxShadow: '0px 0px 8px #BDBDBD',
+        },
 
         [`@media screen and (max-width: ${BREAKPOINTS.LG})`]: {
             width: 175,
@@ -138,7 +155,7 @@ const useStyles = makeStyles({
         }
     },
     name: {
-        height: 30,
+        height: 20,
         marginTop: 16,
         fontSize: '14px',
         fontWeight: 400,

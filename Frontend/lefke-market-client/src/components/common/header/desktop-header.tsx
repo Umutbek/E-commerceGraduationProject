@@ -15,6 +15,7 @@ import {BREAKPOINTS, COLOR} from "../../../enums"
 import {StoreIcon} from "../icons"
 import ProfileModal from "../profile/profile-modal"
 import {fetchFavoritesFromServer} from "../../../redux/states/favorite/actions"
+import {getCartItemsCount} from "../../../redux/states/cart/getters"
 
 export default function DesktopHeader(){
 
@@ -23,6 +24,7 @@ export default function DesktopHeader(){
 
     const isAuth = useSelector(getIsAuth)
     const user = useSelector(getUser)
+    const cartItemsCount = useSelector(getCartItemsCount)
 
     const dispatch = useDispatch()
 
@@ -40,6 +42,11 @@ export default function DesktopHeader(){
         } else {
             dispatch(openAuthModal())
         }
+    }
+
+    const handleCartClick = (e: MouseEvent) => {
+        e.preventDefault()
+        dispatch(openCartModal())
     }
 
     useEffect(() => { setIsProfileModalOpen(false) }, [router.pathname, isAuth])
@@ -95,8 +102,17 @@ export default function DesktopHeader(){
                             </ul>
                             <ul className={classes.navbarRight}>
                                 <li className={classes.navbarRightItem}>
-                                    <a>
-                                        <Image src={'/icons/lefke_cart2.png'} width={24} height={24} alt="lefke cart"/>
+                                    <a onClick={handleCartClick} className="cursor-pointer">
+                                        <div className={classes.cart_icon_wrapper}>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9.5467 20.1813C9.99857 20.1813 10.3649 19.815 10.3649 19.3631C10.3649 18.9112 9.99857 18.5449 9.5467 18.5449C9.09483 18.5449 8.72852 18.9112 8.72852 19.3631C8.72852 19.815 9.09483 20.1813 9.5467 20.1813Z" stroke="#828282" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M18.5467 20.1813C18.9986 20.1813 19.3649 19.815 19.3649 19.3631C19.3649 18.9112 18.9986 18.5449 18.5467 18.5449C18.0948 18.5449 17.7285 18.9112 17.7285 19.3631C17.7285 19.815 18.0948 20.1813 18.5467 20.1813Z" stroke="#828282" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M3 3H6.27273L8.46545 13.9555C8.54027 14.3321 8.7452 14.6705 9.04436 14.9113C9.34351 15.1522 9.71784 15.2801 10.1018 15.2727H18.0545C18.4385 15.2801 18.8129 15.1522 19.112 14.9113C19.4112 14.6705 19.6161 14.3321 19.6909 13.9555L21 7.09091H7.09091" stroke="#828282" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                            </svg>
+                                            <span className="counter">
+                                                { cartItemsCount }
+                                            </span>
+                                        </div>
                                         <span className={classes.navbarRightItemText}>Busket</span>
                                     </a>
                                 </li>
@@ -264,5 +280,25 @@ const useStyles = makeStyles({
     store_link_text: {
         display: 'inline-block',
         marginLeft: 10,
+    },
+    cart_icon_wrapper: {
+        width: 24,
+        height: 24,
+        position: 'relative',
+
+        '& .counter': {
+            top: -8,
+            right: -8,
+            position: 'absolute',
+            width: 18,
+            height: 18,
+            backgroundColor: '#E52E2E',
+            display: 'block',
+            borderRadius: 50,
+            fontSize: '12px',
+            lineHeight: '18px',
+            textAlign: 'center',
+            color: COLOR.WHITE
+        }
     }
 })

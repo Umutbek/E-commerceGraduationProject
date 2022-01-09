@@ -6,7 +6,6 @@ export const fetchFavoritesFromServer = () => async (dispatch: any, getState: an
 
     const auth = getState().auth
 
-    console.log("Umutbek")
     if (auth.isAuth) {
         try {
             const response = await fetch(`${_baseApi}/item/getuserfavourite/`, {

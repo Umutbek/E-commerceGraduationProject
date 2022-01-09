@@ -45,6 +45,9 @@ export default function Catalog({ context, store, category = '', subCategory = '
         if (store){
             const { success, data } = await api.getProducts(store, category, subCategory, subSubCategory, ordering, costInterval)
 
+            console.log("Success", success)
+            console.log("Data", data)
+
             if (success){
                 setProducts(data.results)
                 setCount(data.count)
@@ -60,6 +63,7 @@ export default function Catalog({ context, store, category = '', subCategory = '
                 }
 
                 if (store === 'global'){
+                    console.log("Store type", store)
                     category && breadcrumbs.push({ name: data.data.category?.nameEn, link: `/catalog/${store}/${category}` })
                     subCategory && breadcrumbs.push({ name: data.data.subcategory?.nameEn, link: `/catalog/${store}/${category}/${subCategory}` })
                     subSubCategory && breadcrumbs.push({ name: data.data.subsubcategory?.nameEn, link: `/catalog/${store}/${category}/${subCategory}/${subSubCategory}` })

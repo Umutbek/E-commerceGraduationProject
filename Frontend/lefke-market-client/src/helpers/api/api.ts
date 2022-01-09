@@ -1,4 +1,6 @@
 import {ERROR} from "../../enums"
+import store from "../../redux/store"
+
 
 export const _baseApi = process.env.BASE_API || 'https://lefkemarketbackend.herokuapp.com/api'
 
@@ -54,9 +56,6 @@ export default class Api {
 
             const data = await response.json()
 
-            console.log("Response", response)
-            console.log("Data", data)
-
             if (response.ok){
                 return { success: true, data }
             }
@@ -77,7 +76,14 @@ export default class Api {
 
             let url
 
+            if (store === 'global') {
+
+            url = `${_baseApi}/item/item/?category_slug=${category}&subcategory_slug=${subCategory}&subsubcategory_slug=${subSubCategory}`
+
+            } else {
             url = `${_baseApi}/item/item/?category_slug=${category}&subcategory_slug=${subCategory}&subsubcategory_slug=${subSubCategory}&supplier=${store}`
+
+            }
 
             ordering && (url += `&ordering=${ordering}`)
 
@@ -102,6 +108,7 @@ export default class Api {
 
     getProductsPagination = async (nextLink: string) => {
 
+
         try {
             const response = await fetch(nextLink)
 
@@ -114,6 +121,7 @@ export default class Api {
     }
 
     getProductById = async (id: number | string) => {
+
 
         try {
             const response = await fetch(`${_baseApi}/item/item/${id}/`)
@@ -170,17 +178,14 @@ export default class Api {
 
     getStoreProducts = async () => {
         try {
-            console.log("Suka ya rabotayu")
             const response = await fetch(`${_baseApi}/item/item`)
 
             const data = await response.json()
 
             if (response.ok){
-                console.log("ok")
                 return { success: true, data }
             }
 
-            console.log("Not ok")
             return { success: false, data }
 
         } catch (e) {
@@ -251,11 +256,7 @@ export default class Api {
 
             const response = await fetch(`${_baseApi}/user/store/${slugOrId}/`)
 
-            console.log("Response ", response)
-
             const data = await response.json()
-
-            console.log("Data ", data)
 
             if (response.ok){
                 return { success: true, data }
@@ -364,4 +365,33 @@ export default class Api {
             return { success: false, data: ERROR.SOMETHING_WENT_WRONG }
         }
     }
+
+
+    // order
+
+    createOrder = async (form: object) => {
+        try {
+            const response = await fetch(`${_baseApi}/item/clientorder/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${getToken()}`,
+                },
+                body: JSON.stringify(form)
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                return { success: true, data }
+            }
+
+            return { success: false, data: 'Something went wrong' }
+        } catch (e) {
+            return { success: false, data: 'Something went wrong' }
+        }
+    }
+
 }
+
+export const getToken = () => store.getState().auth.token

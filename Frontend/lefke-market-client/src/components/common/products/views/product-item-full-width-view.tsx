@@ -6,15 +6,19 @@ import Button from "@mui/material/Button"
 import {BREAKPOINTS, COLOR} from "../../../../enums"
 import makeStyles from "@mui/styles/makeStyles"
 import {IProduct} from "../interfaces"
+import {IconButton} from "@mui/material"
+
 
 interface IProductItemFullWidthViewProps {
-
-    handleFavoriteBtnClick: (e: MouseEvent) => void,
+    handleFavoriteBtnClick: (event: any) => void,
     isInFavorites: boolean,
+    isInCart: boolean,
+    toggleAddToCart: () => void
     product: IProduct,
 }
 
-function ProductItemFullWidthView({ product, handleFavoriteBtnClick, isInFavorites }: IProductItemFullWidthViewProps) {
+
+function ProductItemFullWidthView({ product, handleFavoriteBtnClick, isInFavorites, toggleAddToCart, isInCart }: IProductItemFullWidthViewProps) {
 
     const classes = useStyles()
 
@@ -29,7 +33,7 @@ function ProductItemFullWidthView({ product, handleFavoriteBtnClick, isInFavorit
 
                 <div className={classes.info_left_block}>
                     <div className={classes.infoTop}>
-                        <span className={classes.infoArticle}>Code: { product.id }</span>
+                        <span className={classes.infoArticle}>Code: { product.uniqueid }</span>
                         <span className={classes.infoRatingIcon}>
                         <Rating rate={product.rating}/>
                     </span>
@@ -54,18 +58,18 @@ function ProductItemFullWidthView({ product, handleFavoriteBtnClick, isInFavorit
 
                 <div className={classes.info_right_block}>
                     <p className={classes.info_price}>
-                        { product.cost } <span className="TL">TL</span>
+                        { product.cost } TL
                     </p>
                     <div className={classes.info_actions}>
-                        <Button variant="contained" classes={{ root: classes.info_to_cart_btn }}>
-                            busket
+                        <Button variant="contained" classes={{ root: classes.info_to_cart_btn }} onClick={toggleAddToCart}>
+                            { isInCart ? 'Added' : 'Busket' }
                         </Button>
-
-                        <button className={clsx('reset-button', 'cursor-pointer', classes.info_favorite_btn)} onClick={handleFavoriteBtnClick}>
+                        <IconButton className={classes.info_favorite_btn} onClick={handleFavoriteBtnClick}>
                             <Image src={isInFavorites ? '/icons/lefke_liked.png' : `/icons/lefke_like2.png`} width={32} height={32} alt="lefke like icon"/>
-                        </button>
+                        </IconButton>
                     </div>
                 </div>
+
             </div>
         </div>
     )

@@ -5,7 +5,8 @@ import Rating from "../../rating/rating"
 import Button from "@mui/material/Button"
 import {BREAKPOINTS, COLOR} from "../../../../enums"
 import {IProduct} from "../interfaces"
-import {Hidden} from "@mui/material"
+import Hidden from "@mui/material/Hidden"
+import IconButton from "@mui/material/IconButton"
 
 interface IProductItemViewProps {
     handleFavoriteBtnClick: any,
@@ -15,7 +16,7 @@ interface IProductItemViewProps {
     product: IProduct,
 }
 
-function ProductItemView({handleFavoriteBtnClick, product, isInFavorites}: IProductItemViewProps){
+function ProductItemView({handleFavoriteBtnClick, product, isInFavorites, isInCart, toggleAddToCart}: IProductItemViewProps){
 
     const classes = useStyles()
 
@@ -56,11 +57,23 @@ function ProductItemView({handleFavoriteBtnClick, product, isInFavorites}: IProd
                 <Button
                     variant="contained"
                     classes={{ root: classes.to_cart_button }}
+                    onClick={toggleAddToCart}
                 >
                     <Hidden only={["sm", "xs"]}>
-                        <span>Add to busket</span>
+                        { isInCart ? <span>Added</span> : <span>Add to busket</span> }
+                    </Hidden>
+                    <Hidden only={["md", "lg", "xl"]}>
+                        <span className={classes.buttonIcons}>
+                            {
+                                isInCart ? <span>Added</span> : <>
+                                    <Image src={'/icons/plus.png'} width={24} height={24} alt="lefke plus icon"/>
+                                    <Image src={'/icons/lefke_cart3.png'} width={24} height={24} alt="lefke cart icon"/>
+                                </>
+                            }
+                        </span>
                     </Hidden>
                 </Button>
+
             </div>
         </li>
     )

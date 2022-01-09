@@ -1,4 +1,4 @@
-import {memo} from "react"
+import {memo, useCallback, useEffect, useState} from "react"
 import {IProduct} from "./interfaces"
 import {addFavorite, removeFavorite} from "../../../redux/states/favorite/actions"
 import {useDispatch, useSelector} from "react-redux"
@@ -9,6 +9,9 @@ import MainProductItemView from "./views/main-product-item-view"
 import {getIsAuth, getUser} from "../../../redux/states/auth/getters"
 import {LISTING} from "../../../enums";
 import ProductItemFullWidthView from "./views/product-item-full-width-view";
+import {addToCart, decreaseItemInCart, deleteFromCart} from "../../../redux/states/cart/actions"
+import {getCartItemsIds} from "../../../redux/states/cart/getters"
+
 
 interface IProductItemProps {
     product: IProduct,
@@ -24,9 +27,20 @@ function ProductItem({product, isMain = false, api, listing}: IProductItemProps)
     const isAuth = useSelector(getIsAuth)
 
     const favoriteIds = useSelector(getFavoriteItemsIds)
+    const cartItemIds = useSelector(getCartItemsIds)
 
-    const handleFavoriteBtnClick = async (e: MouseEvent) => {
-        e.preventDefault()
+    const [isInCart, setIsInCart] = useState(false)
+
+    // const cartId = useSelector()
+
+    useEffect(() => {
+        setIsInCart(cartItemIds.includes(product.id))
+    }, [cartItemIds])
+
+    // const isInCart =
+    const isInFavorites = favoriteIds.includes(product.id)
+
+    const handleFavoriteBtnClick = async (event: any) => {
         if (isAuth){
             if(favoriteIds.includes(product.id)) {
                 dispatch(removeFavorite(product.id))
@@ -38,7 +52,7 @@ function ProductItem({product, isMain = false, api, listing}: IProductItemProps)
 
             } else {
                 dispatch(addFavorite(product))
-                const { success, data } = await api.addToFavorite(product.id, user.id)
+                const { success, data } = await api.addToFavorite(product.id, user[0]?.id)
 
                 if (success){
                     console.log('product added to favourite: ', data)
@@ -49,8 +63,20 @@ function ProductItem({product, isMain = false, api, listing}: IProductItemProps)
         }
     }
 
-    const isInFavorites = favoriteIds.includes(product.id)
+    const toggleAddToCart = () => {
 
+        if (isAuth) {
+            if (!isInCart) {
+                dispatch(addToCart(product.id, user[0]?.id, product.supplier?.id))
+                setIsInCart(true)
+            } else {
+                dispatch(deleteFromCart(product.id))
+                setIsInCart(false)
+            }
+        } else {
+            dispatch(openAuthModal())
+        }
+    }
 
     if (listing === LISTING.ROW){
         return <ProductItemFullWidthView
@@ -64,6 +90,8 @@ function ProductItem({product, isMain = false, api, listing}: IProductItemProps)
         return <MainProductItemView
             handleFavoriteBtnClick={handleFavoriteBtnClick}
             isInFavorites={isInFavorites}
+            isInCart={isInCart}
+            toggleAddToCart={toggleAddToCart}
             product={product}
         />
     }
@@ -71,6 +99,8 @@ function ProductItem({product, isMain = false, api, listing}: IProductItemProps)
     return <ProductItemView
         handleFavoriteBtnClick={handleFavoriteBtnClick}
         isInFavorites={isInFavorites}
+        isInCart={isInCart}
+        toggleAddToCart={toggleAddToCart}
         product={product}
     />
 }

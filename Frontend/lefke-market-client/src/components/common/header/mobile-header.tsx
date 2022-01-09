@@ -58,7 +58,7 @@ export default function MobileHeader(){
                             >
                                 <CatalogIcon color={COLOR.WHITE}/>
                                 <span className={classes.buttonText}>
-                                    Каталог
+                                    Category
                                 </span>
                             </Button>
                         </div>

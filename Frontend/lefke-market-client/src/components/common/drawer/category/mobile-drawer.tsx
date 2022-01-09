@@ -183,7 +183,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                         </Button>
                     </div>
                     <h3 className={classes.categoriesTitle}>
-                        { selectedCategory && selectedCategory.nameRus }
+                        { selectedCategory && selectedCategory.nameEn }
                     </h3>
                     <span/>
                 </div>
@@ -201,7 +201,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                                     className={classes.categoriesItem}
                                 >
                                     <span className={classes.categoriesItemText} style={{ color: 'green' }}>
-                                    Смотреть все товары
+                                    All items
                                 </span>
                                     <div className={classes.categoriesRightIcon}>
                                         <Image src={'/icons/arrow_right_green.png'} width={16} height={16} alt="lefke arrow icon"/>
@@ -217,7 +217,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                                             className={classes.categoriesItem}
                                             onClick={() => onSubCategoryClick(sub)}
                                         >
-                                            <span className={classes.categoriesItemText}>{ sub.nameRus }</span>
+                                            <span className={classes.categoriesItemText}>{ sub.nameEn }</span>
                                             <div className={classes.categoriesRightIcon}>
                                                 <Image src={'/icons/arrow_right.png'} width={16} height={16} alt="lefke arrow icon"/>
                                             </div>
@@ -226,7 +226,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                                     </li>
                                 )
                             }) : <div className={classes.noCategory}>
-                                Нет категорий
+                                No categories
                             </div>
                         }
                     </ul>
@@ -249,7 +249,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                         </Button>
                     </div>
                     <h3 className={classes.categoriesTitle}>
-                        { selectedSubCategory && selectedSubCategory.nameRus }
+                        { selectedSubCategory && selectedSubCategory.nameEn }
                     </h3>
                     <span/>
                 </div>
@@ -267,7 +267,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                                 >
                                     {/*<Image src={'/icons/temp/fire.png'} width={24} height={24} objectFit={"contain"} alt={"uygo fire png"}/>*/}
                                     <span className={classes.categoriesItemText} style={{ color: 'green' }}>
-                                        Смотреть все товары
+                                        All items
                                     </span>
                                     <div className={classes.categoriesRightIcon}>
                                         <Image src={'/icons/arrow_right_green.png'} width={16} height={16} alt="lefke arrow icon"/>
@@ -283,7 +283,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                                             <a
                                                 className={classes.categoriesItem}
                                             >
-                                                <span className={classes.categoriesItemText}>{ subSub.nameRus }</span>
+                                                <span className={classes.categoriesItemText}>{ subSub.nameEn }</span>
                                                 <div className={classes.categoriesRightIcon}>
                                                     <FiberManualRecordIcon classes={{ root: classes.fiberIcon }}/>
                                                 </div>
@@ -293,7 +293,7 @@ export default function MobileCategoryDrawer({storeName = 'global'}: IMobileCate
                                     </li>
                                 )
                             }) : <div className={classes.noCategory}>
-                                <span className={classes.noCategoryText}> Нет категорий </span>
+                                <span className={classes.noCategoryText}> No categories </span>
                                 <SentimentVeryDissatisfiedIcon/>
                             </div>
                         }

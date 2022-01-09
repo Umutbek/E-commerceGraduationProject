@@ -4,6 +4,7 @@ import settingsReducer, {settingsInitialState} from "./states/settings/reducer"
 import catalogReducer, {catalogInitialState} from "./states/catalog/reducer"
 import authReducer, {authInitialState} from "./states/auth/reducer"
 import favoriteReducer, {favoriteInitialState} from "./states/favorite/reducer"
+import cartReducer, {cartInitialState} from "./states/cart/reducer"
 
 // @ts-ignore
 const composeEnhancers = typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -14,11 +15,14 @@ export const initStore = () => {
         settings: settingsReducer,
         auth: authReducer,
         favorites: favoriteReducer,
+        cart: cartReducer,
+
     }), {
         catalog: catalogInitialState,
         settings: settingsInitialState,
         auth: authInitialState,
         favorites: favoriteInitialState,
+        cart: cartInitialState
 
     }, composeEnhancers(
         applyMiddleware(thunkMiddleware) )

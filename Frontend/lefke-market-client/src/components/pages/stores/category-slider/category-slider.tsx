@@ -3,6 +3,7 @@ import makeStyles from "@mui/styles/makeStyles"
 import Button from "@mui/material/Button"
 import clsx from "clsx"
 import {BREAKPOINTS, COLOR} from "../../../../enums"
+import {ArrowNextIcon} from "../../../common/icons"
 
 const useStyles = makeStyles({
     swiper: {
