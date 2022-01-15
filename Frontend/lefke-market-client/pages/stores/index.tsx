@@ -55,6 +55,7 @@ export default function Stores(){
         setIsStoresLoading(true)
         const { success, data } = await api.getStores(categorySlug)
 
+        console.log("Data", data)
         if (success){
             setStores(data)
         }
@@ -94,7 +95,6 @@ export default function Stores(){
                                 )}
                             </StoresList>
                     }
-
                 </div>
             </div>
         </div>

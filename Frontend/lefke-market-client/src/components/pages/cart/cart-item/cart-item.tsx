@@ -26,20 +26,36 @@ function CartItem({ item, quantity }: ICartItemProps) {
     const [cartItem, setCartItem] = useState(item)
     const [count, setCount] = useState(quantity)
 
+    const [errors, setErrors] = useState({
+    count: null,
+    })
+
+
     const handleIncrement = () => {
+        console.log("Hello")
+        console.log("Count", count)
+        console.log("Quantity", item.quantity)
+
+        if (count>=item.quantity){
+          setErrors(old => ({ ...old, count: 'You can select maximum ' + item.quantity + ' items'}))
+          return
+        }
         setCount(c => c + 1)
         dispatch(addToCart(item.id,  user[0]?.id, item.supplier))
     }
 
-    const handleDecrement = () => {
-        setCount(c => {
-            if (c > 0) {
-                dispatch(decreaseItemInCart(item.id))
-                return c - 1
-            }
 
-            return c
-        })
+    const handleDecrement = () => {
+        if (count<=10){
+
+            setErrors(old => ({ ...old, count: null }))
+            setCount(c => {
+                if (c > 0) {
+                    dispatch(decreaseItemInCart(item.id))
+                    return c - 1
+                }
+                return c
+        })}
     }
 
     const handleRemove = () => {
@@ -78,13 +94,20 @@ function CartItem({ item, quantity }: ICartItemProps) {
                             <path d="M18 13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z" fill="#0AAD3B"/>
                         </svg>
                     </Button>
-                    <input value={count} type="text" className={classes.amount_input}/>
+                    <input
+                     value={count}
+                     type="text"
+                     className={classes.amount_input}
+                     className={clsx(classes.amount_input, errors.code ? classes.inputErrorBorder : '')}
+
+                     />
                     <Button variant="outlined" classes={{ root: clsx(classes.amount_button, classes.plus) }} onClick={handleIncrement}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z" fill="white"/>
                         </svg>
                     </Button>
                 </div>
+                {errors.count && <span className={classes.inputErrorText}>{ errors.count }</span>}
             </div>
             <div className={classes.remove}>
                 <IconButton onClick={handleRemove} title="Remove from busket">
@@ -102,6 +125,12 @@ const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'space-between',
     },
+    inputErrorText: {
+        fontSize: '12px',
+        color: 'red'
+    },
+
+    inputErrorBorder: { borderColor: 'red' },
     image_wrapper: {
         display: 'block',
         position: 'relative',

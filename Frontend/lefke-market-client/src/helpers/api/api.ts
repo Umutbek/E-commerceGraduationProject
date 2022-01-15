@@ -392,6 +392,28 @@ export default class Api {
         }
     }
 
+    getOrders = async (form: object) => {
+        try {
+            const response = await fetch(`${_baseApi}/item/clientorder/`, {
+                method: 'Get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${getToken()}`,
+                },
+                body: JSON.stringify(form)
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                return { success: true, data }
+            }
+
+            return { success: false, data: 'Something went wrong' }
+        } catch (e) {
+            return { success: false, data: 'Something went wrong' }
+        }
+    }
 }
 
 export const getToken = () => store.getState().auth.token

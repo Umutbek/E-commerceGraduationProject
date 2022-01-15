@@ -208,7 +208,7 @@ export default function AuthContent({ open, onSuccess, onClose }: IAuthContentPr
                                                     className={clsx(classes.textInput, errors.code ? classes.inputErrorBorder : '')}
                                                     placeholder="Password"
                                                     type="password"
-                                                    value={inputCode}
+                                                    value={inputCode}inputErrorBorder
                                                     onChange={handleCodeChange}
                                                 />
                                                 {errors.code && <span className={classes.inputErrorText}>{ errors.code }</span>}
