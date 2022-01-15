@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Category(models.Model):
-    """Category for an Item"""
+    """Category model"""
     nameEn = models.CharField(max_length=200)
     nameTr = models.CharField(max_length=200)
     icon = models.CharField(max_length=1000, null=True, blank=True)

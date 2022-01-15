@@ -106,7 +106,7 @@ class GetClientOrderSerializer(serializers.ModelSerializer):
     """Serializer for client order"""
     storeId = StoreSerializer()
     clientId = RegularAccountSerializer()
-    cart = QuantityItemSerializer()
+    cart = ModelCartSerializer()
 
     class Meta:
         model = models.ModelOrder

@@ -6,7 +6,7 @@ class OrderStatuses(models.IntegerChoices):
     Delivering = 3, 'On way'
     Delivered = 4, 'Delivered'
     Rejected = 5, 'Declined'
-    ClientReject = 6, 'Declined by client'
+
 
 class OrderType(models.IntegerChoices):
     delivery = 1, 'Delivery'

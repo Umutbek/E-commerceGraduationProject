@@ -48,7 +48,9 @@ def create_order_in_firebase(saved_data, currentuser):
         u'totalcount': saved_data.totalcount, u'ordertype': saved_data.ordertype, u'declinereason': saved_data.declinereason,
         u'address': saved_data.address, u'comment': saved_data.comment, u'date': saved_data.date
     }
-    firestore.db.collection(u'stores').document(str(saved_data.storeId.id)).collection(u'orders').document(
+    firestore.db.collection(u'stores')\
+        .document(str(saved_data.storeId.id))\
+        .collection(u'orders').document(
         str(saved_data.id)).set(data)
 
     for i in saved_data.cart.listitem.all():
