@@ -143,6 +143,7 @@ function ProductListPage(props) {
                   <th scope="col">Name</th>
                   <th scope="col">Photo</th>
                   <th scope="col">Cost</th>
+                  <th scope="col">Quantity</th>
                   <th scope="col"/>
                 </tr>
                 </thead>

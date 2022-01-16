@@ -40,7 +40,7 @@ export default class ServerService {
       }
     }
 
-    return await this._doRequestAndParse(`/api/item/item/${id}`, options)
+    return await this._doRequestAndParse(`/api/item/item/${id}/`, options)
   }
 
   updateProduct = async (id, form) => {
@@ -53,7 +53,7 @@ export default class ServerService {
       body: JSON.stringify(form)
     }
 
-    return this._doRequestAndParse(`/api/item/item/${id}`, options)
+    return this._doRequestAndParse(`/api/item/item/${id}/`, options)
   }
 
   deleteProduct = async id => {
@@ -79,30 +79,22 @@ export default class ServerService {
     return await this._doRequestAndParse(`/api/item/subsubcategory/?subcategory=${subCategoryId}`)
   }
 
-//  updateStatus = async (id, status, declinereason) => {
-//    const options = {
-//      method: 'PATCH',
-//      headers: {
-//        'Content-Type': 'application/json',
-//        'Authorization': `Token ${getToken()}`
-//      },
-//      body: JSON.stringify({status, declinereason: 'dfds'})
-//    }
-//
-//    return await this._doRequestAndParse(`/api/item/clientorder/${id}`, options)
-//  }
-
-  updateOrderStatus = async (id, status, declinereason) => {
-    try {
-      const res = await axios.patch(`${_baseApi}/api/item/clientorder/${id}`, { status, declinereason}, getConfig())
-      return isRequestSuccess(res.status) ? { hasError: false, data: {} } : { hasError: true, data: {} }
-    } catch (e) {
-      return { hasError: true, data: {} }
+  updateStatus = async (id, status, declinereason) => {
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${getToken()}`
+      },
+      body: JSON.stringify({status, declinereason: 'Test'})
     }
+
+    return await this._doRequestAndParse(`/api/item/clientorder/${id}/`, options)
   }
 
+  _doRequestAndParse = async (url, options) => {
+    console.log(options)
 
-  _doRequestAndParse = async (url, options = { method: 'GET' }) => {
     try {
       const response = await fetch(_baseApi + url, options)
       const data = await response.json()

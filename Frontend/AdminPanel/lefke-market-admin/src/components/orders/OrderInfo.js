@@ -7,8 +7,6 @@ import MiniSpinner from "../spinners/MiniSpinner";
 
 function OrderInfo({ selectedOrder, orderItems, isItemsLoading }) {
 
-  console.log('selectedOrder: ', selectedOrder)
-  console.log('orderItems: ', orderItems)
 
   return (
     <>
@@ -34,7 +32,7 @@ function OrderInfo({ selectedOrder, orderItems, isItemsLoading }) {
           <CFormGroup>
             <CLabel>Client name</CLabel>
             <CInput
-              value={selectedOrder.clientname}
+              value={selectedOrder.username}
               disabled
               className="bg-white text-black-80"
             />
@@ -111,7 +109,7 @@ function OrderInfo({ selectedOrder, orderItems, isItemsLoading }) {
                 <th scope="row">{ index + 1 }</th>
                 <td>{ item.name }</td>
                 <td>{ item.cost }</td>
-                <td>{ item.count }</td>
+                <td>{ item.quantity }</td>
                 <td>{ item.total }</td>
               </tr>
             )) }

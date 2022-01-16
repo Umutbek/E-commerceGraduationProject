@@ -65,6 +65,7 @@ export const login = (username, password, firebase, redirectToMainWhenLogin) => 
       dispatch(loginFail(data?.detail[0] || ERRORS.LOGIN_FAIL_ERROR))
     }
   } catch (e) {
+    console.log("Hello2")
     dispatch(loginFail(ERRORS.NETWORK_OR_SYNTAX_ERROR))
   }
 

@@ -43,6 +43,7 @@ function ProductForm({ product = null, isEdit = false }) {
         name: product.name,
         description: product.description,
         cost: product.cost,
+        quantity: product.quantity
       })
     }
   }, [product])
@@ -243,6 +244,21 @@ function ProductForm({ product = null, isEdit = false }) {
                     value={inputs.cost}
                     onChange={onInputsChange}
                     placeholder="Enter product cost..."
+                    className={ validationErrors.cost ? 'border-danger' : '' }
+                  />
+                  { validationErrors.cost && <CFormText><span className="text-danger">{ validationErrors.cost }</span></CFormText> }
+                </CFormGroup>
+
+                <CFormGroup>
+                  <CLabel htmlFor="pr-quantity">Quantity</CLabel>
+                  <CInput
+                    type="number"
+                    id="pr-quantity"
+                    name="quantity"
+                    autoComplete="pr-quantity"
+                    value={inputs.quantity}
+                    onChange={onInputsChange}
+                    placeholder="Enter product quantity..."
                     className={ validationErrors.cost ? 'border-danger' : '' }
                   />
                   { validationErrors.cost && <CFormText><span className="text-danger">{ validationErrors.cost }</span></CFormText> }

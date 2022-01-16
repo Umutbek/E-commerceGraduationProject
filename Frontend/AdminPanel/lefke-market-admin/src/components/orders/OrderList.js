@@ -73,18 +73,19 @@ function OrdersList({ status = 'all' }) {
 
   const closeDeclineModal = useCallback(() => setIsDeclineModalOpen(false), [])
 
-  const updateOrderStatus = useCallback(async (usrId, order, newStatus, reason = '') => {
+  const updateOrderStatus = useCallback(async (userId, order, newStatus, reason = 'qwerty') => {
 
     closeOrderModal()
 
     try {
-      const { hasError, data } = await serverService.updateOrderStatus(order.id, newStatus, reason)
+      const { hasError, data } = await serverService.updateStatus(order.id, newStatus, reason)
       if (hasError){
         toast.error('Something went wrong')
       }
     }
     catch (e) {
-      toast.error("Null deytko")
+      console.log(e)
+      toast.error("Ooops something went wrong")
     }
 
     closeDeclineModal()

@@ -16,7 +16,7 @@ function EditProductPage(props) {
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true)
-      const result = await serverService.getProduct(productId)
+      const result = await serverService.updateProduct(productId)
       if (!result.hasError){
         setProduct(result.data)
       } else {
