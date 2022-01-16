@@ -82,7 +82,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     filter_class = filters.ItemFilter
 
     ordering_fields = ('views', 'cost',)
-    search_fields = ('name',)
+    search_fields = ('name', 'uniqueid')
     pagination_class = FooPagination
     lookup_field = 'slug'
 
