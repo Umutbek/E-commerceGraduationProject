@@ -5,7 +5,7 @@ def create_cart(self,serializer):
     itemid = serializer.validated_data['itemid']
     client = serializer.validated_data['client']
     store = serializer.validated_data['store']
-    itemwithquant = models.ItemWithQuantity.objects.filter(item=itemid, user=self.request.user)
+    itemwithquant = models.ItemWithQuantity.objects.filter(item=itemid, user=self.request.user, isavailable=True)
     item = models.Item.objects.get(id=itemid)
     mystore = models.Store.objects.get(id=store)
     myuser = models.RegularAccount.objects.get(id=client)
@@ -19,8 +19,8 @@ def create_cart(self,serializer):
         newitemwithquant = models.ItemWithQuantity(user=self.request.user, item=item)
         newitemwithquant.save()
 
-    newitemwithquant = models.ItemWithQuantity.objects.filter(item=item, user=self.request.user)
-    cart = models.ModelCart.objects.filter(check=store + client)
+    newitemwithquant = models.ItemWithQuantity.objects.filter(item=item, user=self.request.user, isavailable=True)
+    cart = models.ModelCart.objects.filter(check=store + client, isavailable=True)
 
     if cart:
         for j in cart:
@@ -33,7 +33,7 @@ def create_cart(self,serializer):
             clientid=myuser, storeid=mystore, check=store + client
         )
         newcart.save()
-        addcart = models.ModelCart.objects.filter(check=store + client)
+        addcart = models.ModelCart.objects.filter(check=store + client, isavailable=True)
         for i in addcart:
             for q in newitemwithquant:
                 i.listitem.add(q)

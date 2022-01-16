@@ -81,6 +81,7 @@ class ItemWithQuantity(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     total = models.IntegerField(default=0)
+    isavailable = models.BooleanField(default=True)
 
     def save(self):
         self.total=self.item.cost * self.quantity
