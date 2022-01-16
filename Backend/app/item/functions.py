@@ -63,11 +63,11 @@ def create_order_in_firebase(saved_data, currentuser):
             str(saved_data.id)).collection(u'items').document(
             str(i.item.id)).set(item)
 
-    saved_data.cart.visibility = False
+    saved_data.cart.isavailable = False
     for i in saved_data.cart.listitem.all():
         print(i)
-        i.visibility = False
-        print("After", i.visibility)
+        i.isavailable = False
+        print("After", i.isavailable)
         i.save()
 
     saved_data.cart.save()

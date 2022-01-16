@@ -74,7 +74,7 @@ class ModelCartSerializer(serializers.ModelSerializer):
     """Get cart(busket)"""
     class Meta:
         model = models.ModelCart
-        fields = ('id', 'listitem', 'clientid', 'storeid', 'check', 'total_price')
+        fields = ('id', 'listitem', 'clientid', 'storeid', 'check', 'total_price', 'isavailable')
         read_only_fields = ('id',)
 
 

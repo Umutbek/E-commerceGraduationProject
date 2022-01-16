@@ -97,6 +97,7 @@ class ModelCart(models.Model):
     storeid = models.ForeignKey(Store, on_delete=models.CASCADE, null=True, related_name="storeidforcard")
     check = models.IntegerField(null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
+    isavailable = models.BooleanField(default=True)
 
     @property
     def total_price(self):
