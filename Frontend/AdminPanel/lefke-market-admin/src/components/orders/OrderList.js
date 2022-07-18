@@ -42,6 +42,10 @@ function OrdersList({ status = 'all' }) {
   }, [])
 
   const fetchOrderItems = useCallback(async (usrId, docId) => {
+
+    console.log("User Id", usrId)
+    console.log("Doc ID", docId)
+
     setIsItemsLoading(true)
     const snapshot = await firestore.collection("stores")
       .doc(usrId.toString())

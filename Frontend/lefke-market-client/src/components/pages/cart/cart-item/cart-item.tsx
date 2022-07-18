@@ -32,9 +32,6 @@ function CartItem({ item, quantity }: ICartItemProps) {
 
 
     const handleIncrement = () => {
-        console.log("Hello")
-        console.log("Count", count)
-        console.log("Quantity", item.quantity)
 
         if (count>=item.quantity){
           setErrors(old => ({ ...old, count: 'You can select maximum ' + item.quantity + ' items'}))
@@ -46,7 +43,7 @@ function CartItem({ item, quantity }: ICartItemProps) {
 
 
     const handleDecrement = () => {
-        if (count<=10){
+        if (count<=item.quantity){
 
             setErrors(old => ({ ...old, count: null }))
             setCount(c => {

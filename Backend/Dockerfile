@@ -3,7 +3,7 @@ LABEL maintainer="karimovumutbek@gmail.com"
 
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt /requirements.txt
+COPY app/requirements.txt /requirements.txt
 COPY ./app /app
 WORKDIR /app
 

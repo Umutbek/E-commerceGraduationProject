@@ -15,7 +15,7 @@ export default class ServerService {
       }
     }
 
-    return await this._doRequestAndParse(`/api/item/item/${params}`, options)
+    return await this._doRequestAndParse(`/api/item/item/?supplier=kiler&${params}`, options)
 
   }
 

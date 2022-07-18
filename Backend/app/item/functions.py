@@ -65,9 +65,7 @@ def create_order_in_firebase(saved_data, currentuser):
 
     saved_data.cart.isavailable = False
     for i in saved_data.cart.listitem.all():
-        print(i)
         i.isavailable = False
-        print("After", i.isavailable)
         i.save()
 
     saved_data.cart.save()

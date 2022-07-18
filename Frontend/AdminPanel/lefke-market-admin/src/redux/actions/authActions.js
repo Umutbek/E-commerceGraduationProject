@@ -29,6 +29,8 @@ export const loadUser = () => async (dispatch, getState) => {
     const data = await response.json()
 
     if (response.ok){
+
+      console.log('Pidarazy')
       dispatch(userSuccess(data))
     } else {
       dispatch(userFail(''))
@@ -55,10 +57,12 @@ export const login = (username, password, firebase, redirectToMainWhenLogin) => 
 
     const data = await response.json()
 
+    console.log("Data", data)
+    console.log("Response", response)
+
     if (response.ok){
-
+      console.log("Hello login")
       await firebase.auth().signInWithEmailAndPassword(username, password)
-
       dispatch(loginSuccess(data.data[0], data.token))
       redirectToMainWhenLogin()
     } else {

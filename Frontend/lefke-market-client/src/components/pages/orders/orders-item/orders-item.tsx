@@ -3,7 +3,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import makeStyles from "@mui/styles/makeStyles"
 import { Badge } from '@mui/material';
-import {toNormalDate} from "../../../../helpers/time"
 
 import {BREAKPOINTS, COLOR, STATUSES} from "../../../../enums"
 
@@ -142,8 +141,6 @@ const useStyles = makeStyles({
 function OrdersItem({id, store, client, date, cart, children }: IStoresItemProps) {
 
     const classes = useStyles()
-
-    console.log("Date", toNormalDate(date.seconds, 'Today', 'Yesterday'))
 
     const getStatusWithBadge = useCallback((statusId) => {
 
